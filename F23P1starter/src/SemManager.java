@@ -1,14 +1,14 @@
 
 /**
- * Project 1 seminar
+ * {Project Description Here}
  */
 
 /**
  * The class containing the main method.
  *
+ * @author Pratham Chopra 
  * @author Nirish Chilakala
- * @author Pratham Chopra
- * @version 08/30/2023
+ * @version 2023-08-30
  */
 
 // On my honor:
@@ -39,5 +39,7 @@ public class SemManager {
     public static void main(String[] args) {
         // This is the main file for the program.
         Seminar dum = new Seminar();
+        String filename = args[2];
+        CommandProcessor Reader = new CommandProcessor(filename);
     }
 }
