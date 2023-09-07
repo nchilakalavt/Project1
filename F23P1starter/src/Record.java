@@ -7,7 +7,17 @@ public class Record {
            S = s;
           id = s.getID();
     }
+
+    public int getID() {
+        // TODO Auto-generated method stub
+        return this.id;
+    }
     
+    public Seminar getSeminar() {
+        return S;
+    }
+    
+  
     //getSeminar
     //getiD 
     

@@ -139,6 +139,6 @@ public class Seminar implements Serializable {
 
     public int getID() {
         // TODO Auto-generated method stub
-        return 0;
+        return this.id;
     }
 }
