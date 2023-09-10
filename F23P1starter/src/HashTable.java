@@ -23,7 +23,10 @@ public class HashTable {
                 int hash2 = (((id / lister.length ) % (lister.length / 2)) * 2) + 1;
                 if(lister[(homeSlot + hash2) % lister.length] == null) {
                     lister[(homeSlot + hash2) % lister.length] = r; 
+<<<<<<< Updated upstream
                     break;
+=======
+>>>>>>> Stashed changes
                 }
             }
         }
