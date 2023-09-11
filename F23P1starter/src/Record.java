@@ -1,4 +1,3 @@
-
 public class Record {
     public int id;
     public Seminar S;
@@ -17,7 +16,10 @@ public class Record {
         return S;
     }
     
-  
+    public void setID(int idToSet) {
+        id = idToSet;
+    }
+    
     //getSeminar
     //getiD 
     
