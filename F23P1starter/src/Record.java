@@ -1,18 +1,10 @@
 public class Record {
     public int id;
     public Seminar S;
-    public int length;
-    public int pos;
-    public Record(Seminar s,int p) {
-          try {
-            length = s.serialize().length;
-        }
-        catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+
+    public Record(Seminar s) {
+           S = s;
           id = s.getID();
-          pos = p;
     }
 
     public int getID() {

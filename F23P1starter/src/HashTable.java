@@ -67,7 +67,6 @@ public class HashTable {
         if (tombstone != null) {
             tombstone.setID(-1);
             lister[homeSlot] = tombstone;
-            tombstone = null;
             return "Record with ID " + id + " has been deleted";
         }
         else {
