@@ -3,6 +3,7 @@ public class MemManager {
     private int memBytes;
     private DLList<Record> list;
     private int pos;
+    private HashTable hash;
    //Constructor. poolsize defines the size of the memory pool in bytes
     public MemManager(int poolsize){
         memBytes = poolsize;
@@ -10,8 +11,9 @@ public class MemManager {
     // Insert a record and return its position handle.
     // space contains the record to be inserted, of length size.
     public Record insert(byte[] space, int size) {
-        memBytes-=size;
         
+        memBytes-=size;
+        hash.hashInsert();
         return null;
     }
     // Return the length of the record associated with theHandle
@@ -28,7 +30,7 @@ public class MemManager {
     // copying it into space.
     // Return the number of bytes actually copied into space.
     public int get(byte[] space, Record theRecord, int size) {
-        
+        return 
     }
     // Dump a printout of the freeblock list
     public void dump() {

@@ -3,11 +3,11 @@ import  student.TestCase;
 
 public class HashTableTest extends TestCase{
     private String[] keywords = {"Good", "Bad", "Ugly"};
-    private Seminar mysem = new Seminar(1729, "Seminar Title", "2405231000", 75,
+    private Seminar mysem = new Seminar(1729, "Seminar Title", "2405231000", 1,
         (short)15, (short)33, 125, keywords, "This is a great seminar");
-    private Seminar mysem2 = new Seminar(1739, "Seminar Title", "2405231000", 75,
+    private Seminar mysem2 = new Seminar(1739, "Seminar Title", "2405231000", 1,
         (short)15, (short)33, 125, keywords, "This is a great seminar");
-    private Seminar mysem3 = new Seminar(1639, "Seminar Title", "2405231000", 75,
+    private Seminar mysem3 = new Seminar(1639, "Seminar Title", "2405231000", 1,
         (short)15, (short)33, 125, keywords, "This is a great seminar");
     private Record r = new Record(mysem); // id = 1729
     private Record r2 = new Record(mysem2); // id = 1739
@@ -15,7 +15,7 @@ public class HashTableTest extends TestCase{
     private HashTable h2 = new HashTable(1);
     
     public void testInsert() {
-        Seminar tester = new Seminar(1, "Seminar Title", "2405231000", 75,
+        Seminar tester = new Seminar(1, "Seminar Title", "2405231000", 1,
             (short)15, (short)33, 125, keywords, "This is a great seminar");
        Record testr = new Record(tester);
        HashTable testhash = new HashTable(10);
@@ -27,9 +27,9 @@ public class HashTableTest extends TestCase{
        
        HashTable h69 = new HashTable(10);
        h69.hashInsert(testr);
-       Seminar sameIdTesterSem = new Seminar(1, "Seminar Title", "2405231000", 75,
+       Seminar sameIdTesterSem = new Seminar(1, "Seminar Title", "2405231000", 1,
            (short)15, (short)33, 125, keywords, "This is a great seminar");
-       Record sameIdTesterRec = new Record(sameIdTesterSem);
+       Record sameIdTesterRec = new Record(sameIdTesterSem, 1);
        h69.hashInsert(sameIdTesterRec);
     }
     public void testSearch() {
@@ -44,9 +44,9 @@ public class HashTableTest extends TestCase{
         
         HashTable h10 = new HashTable(10);
         h10.hashInsert(r);
-        Record r2 = new Record(mysem2);
+        Record r2 = new Record(mysem2, 0);
         h10.hashInsert(r2);
-        Record r3 = new Record(mysem3);
+        Record r3 = new Record(mysem3, 1);
         assertEquals(r3.getSeminar(), mysem3);
         h10.delete(r2);
         h10.hashInsert(r3);
@@ -54,9 +54,9 @@ public class HashTableTest extends TestCase{
         
         HashTable h11 = new HashTable(10);
         h11.hashInsert(r);
-        Record r4 = new Record(mysem2);
+        Record r4 = new Record(mysem2, 0);
         h11.hashInsert(r4);
-        Record r5 = new Record(mysem3);
+        Record r5 = new Record(mysem3, 1);
         h11.hashInsert(r5);
         assertEquals(h11.search(1639), null);
         
