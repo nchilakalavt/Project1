@@ -3,6 +3,7 @@ public class Record {
     public Seminar S;
     public int length;
     public int pos;
+    
     public Record(Seminar s,int p) {
           try {
             length = s.serialize().length;
@@ -30,5 +31,13 @@ public class Record {
     
     //getSeminar
     //getiD 
-    
+    public int getPos() {
+        return this.pos;
+    }
+   
+
+    public int getLength() {
+        return this.length;
+    }
+
 }

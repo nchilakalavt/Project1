@@ -1,8 +1,13 @@
-import java.util.Scanner;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class CommandProcessor {
-    public int id;
-    public String title;
+    private int id;
+    private String title;
     private String date; // Seminar date
     private int length; // Seminar length
     private String[] keywords; // Seminar keywords
@@ -10,65 +15,128 @@ public class CommandProcessor {
     private short y; // Seminar y coord
     private String desc; // Seminar description
     private int cost; // Seminar cost
-    private Scanner scanF;
-    String filename;
+    private String file;
+    //String filename;
     
+    /**
+     * Loads the CommandProcessor object 
+     *  String for filename
+     
     public CommandProcessor(String s) {
         filename = s;
     }
+    **/
     
-    public void processCommands(String inputFile) {
-       this.scanF = new Scanner(inputFile);
+    /**
+     * Scans the input file 
+     * @param String for filename
+     */
+    public CommandProcessor(String inputFile) {
+       this.file = inputFile;
     }
-    
-    public Seminar processor(Scanner scanner) {
-        this.scanF = scanner;
-        String lineOne = scanner.nextLine();
+    /**
+     * Checks if command is insert, search, or delete
+     * @param File object for filename
+     */
+    public void processor() {
+  
+            String filePath = file;
+
+            try {
+                // Read the file into a byte array
+                byte[] fileBytes = Files.readAllBytes(Paths.get(filePath));
+
+                // Convert the byte array to a String using UTF-8 encoding (or your desired encoding)
+                String fileContent = new String(fileBytes, StandardCharsets.UTF_8);
+
+                // Now, 'fileContent' contains the contents of the text file as a String
+                System.out.println(fileContent);
+            }
+            
+            catch (IOException e){
+                e.printStackTrace();
+            }
+        
+        /**String lineOne = File.nextLine();
+        System.out.println(lineOne);
         String[] command = lineOne.split(" ");
         if (command[0].equals("insert")) {
-            return commandProcessorInsert(scanF);
+            return commandProcessorInsert(file);
         }
         else if (command[0].equals("delete")) {
-            return commandProcessorDelete(scanF);
+            return commandProcessorDelete(file);
         }
         
         else if (command[0].equals("search")) {
-            return commandProcessorSearch(scanF);
+            return commandProcessorSearch(file);
         }
-        
         else {
             System.out.println("Error processing commands");
             return null;
-        }
+        }**/
     }
-    
-    public Seminar commandProcessorInsert(Scanner scanner) {
-        String lineOne = scanner.nextLine();
+    /**
+     * Insert command for command processor
+     * @param File inputfile
+     */
+    /**public Seminar commandProcessorInsert(File File) {
+        String lineOne = File.nextLine();
         String[] valueLineOne = lineOne.split(" ");
         this.id = Integer.parseInt(valueLineOne[1]); //Setting ID
-        this.title = scanner.nextLine();
-        String lineThree = scanner.nextLine();
+        this.title = File.nextLine();
+        String lineThree = File.nextLine();
         String[] valuesLineThree = lineThree.split(" ");
         this.date = valuesLineThree[0];
         this.length = Integer.parseInt(valuesLineThree[1]);
         this.x = Short.parseShort(valuesLineThree[2]);
         this.y = Short.parseShort(valuesLineThree[3]);
         this.cost = Integer.parseInt(valuesLineThree[4]);
-        String lineFour = scanner.nextLine();
+        String lineFour = File.nextLine();
         this.keywords = lineFour.split(" ");
-        this.desc = scanner.nextLine();
+        this.desc = File.nextLine();
         
         Seminar retSem = new Seminar(this.id, this.title, this.date, this.length, this.x,
         this.y, this.cost, this.keywords, this.desc);
+        return retSem;
+    }
+    
+    public String commandProcessorInsert(File File) {
+        String lineOne = File.nextLine();
+        String[] valueLineOne = lineOne.split(" ");
+        String id = valueLineOne[1]; //Setting ID
+        String title = File.nextLine();
+        String lineThree = File.nextLine();
+        String[] valuesLineThree = lineThree.split(" ");
+        String date = valuesLineThree[0];
+        String length = valuesLineThree[1];
+        String x = valuesLineThree[2];
+        String y = valuesLineThree[3];
+        String cost = valuesLineThree[4];
+        String lineFour = File.nextLine();
+        String[] keywords = lineFour.split(" ");
+        String desc = File.nextLine();
+        return id + ", " + title + ", " + date + ", " + 
+            length + ", " + x + ", " + y + ", " + cost + ", " + keywords + ", " + desc;
+    }**/
+    
+    /**
+     * Delete command for command processor
+     * @param File inputfile
+     */
+    public String commandProcessorDelete(File File) {
+        return null;
+    }
+    /**
+     * Search command for command processor
+     * @param File inputfile
+     */
+    public String commandProcessorSearch(File File) {
         return null;
     }
     
-    public Seminar commandProcessorDelete(Scanner scanner) {
-        return null;
+    public String getFile() {
+        return this.file;
     }
     
-    public Seminar commandProcessorSearch(Scanner scanner) {
-        return null;
-    }
 }
 

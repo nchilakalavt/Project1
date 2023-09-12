@@ -1,17 +1,18 @@
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
+
 import  student.TestCase;
 
 public class HashTableTest extends TestCase{
-    String[] keywords = {"Good", "Bad", "Ugly"};
-    Seminar mysem = new Seminar(1729, "Seminar Title", "2405231000", 75,
+    private String[] keywords = {"Good", "Bad", "Ugly"};
+    private Seminar mysem = new Seminar(1729, "Seminar Title", "2405231000", 75,
         (short)15, (short)33, 125, keywords, "This is a great seminar");
-    Seminar mysem2 = new Seminar(1739, "Seminar Title", "2405231000", 75,
+    private Seminar mysem2 = new Seminar(1739, "Seminar Title", "2405231000", 75,
         (short)15, (short)33, 125, keywords, "This is a great seminar");
-    Record r = new Record(mysem); // id = 1729
-    Record r2 = new Record(mysem2); // id = 1739
-    HashTable h = new HashTable(2);
-    HashTable h2 = new HashTable(1);
+    private Seminar mysem3 = new Seminar(1639, "Seminar Title", "2405231000", 75,
+        (short)15, (short)33, 125, keywords, "This is a great seminar");
+    private Record r = new Record(mysem); // id = 1729
+    private Record r2 = new Record(mysem2); // id = 1739
+    private HashTable h = new HashTable(2);
+    private HashTable h2 = new HashTable(1);
     
     public void testInsert() {
         Seminar tester = new Seminar(1, "Seminar Title", "2405231000", 75,
@@ -24,6 +25,12 @@ public class HashTableTest extends TestCase{
        h2.delete(r);
        h2.hashInsert(r2);
        
+       HashTable h69 = new HashTable(10);
+       h69.hashInsert(testr);
+       Seminar sameIdTesterSem = new Seminar(1, "Seminar Title", "2405231000", 75,
+           (short)15, (short)33, 125, keywords, "This is a great seminar");
+       Record sameIdTesterRec = new Record(sameIdTesterSem);
+       h69.hashInsert(sameIdTesterRec);
     }
     public void testSearch() {
         assertEquals(h.search(1739), null);
@@ -32,18 +39,29 @@ public class HashTableTest extends TestCase{
         assertEquals(h.search(1739),r2);
         assertEquals(h2.search(1729), r);
         h.delete(r2);
+        assertEquals(h2.search(1739), null);
         assertEquals(h.search(189), null);
+        
         HashTable h10 = new HashTable(10);
-        Seminar mysem3 = new Seminar(1749, "Seminar Title", "2405231000", 75,
-            (short)15, (short)33, 125, keywords, "This is a great seminar");
         h10.hashInsert(r);
         Record r2 = new Record(mysem2);
         h10.hashInsert(r2);
         Record r3 = new Record(mysem3);
-        h10.hashInsert(r3);
+        assertEquals(r3.getSeminar(), mysem3);
         h10.delete(r2);
-        assertEquals(h2.search(1749), r3);
+        h10.hashInsert(r3);
+        assertEquals(h10.search(1639), r3);
         
+        HashTable h11 = new HashTable(10);
+        h11.hashInsert(r);
+        Record r4 = new Record(mysem2);
+        h11.hashInsert(r4);
+        Record r5 = new Record(mysem3);
+        h11.hashInsert(r5);
+        assertEquals(h11.search(1639), null);
+        
+        HashTable h69 = new HashTable(4);
+        assertEquals(h69.search(420), null);
     }
     public void testGetSize() {
         assertEquals(h2.getSize(),1);
@@ -59,6 +77,9 @@ public class HashTableTest extends TestCase{
         assertEquals(h3.delete(r), "Record with ID 1729 has been deleted");
         assertEquals(h3.search(1729), null);
         assertEquals(h3.delete(r2), "Record with ID 1739 not found.");
+        
+        HashTable h5 = new HashTable(4);
+        assertEquals(h5.delete(r), "Hash Table is empty");
     }
 
 

@@ -1,8 +1,9 @@
 import student.TestCase;
 
 /**
- * @author {Your Name Here}
- * @version {Put Something Here}
+ * @author Nirish Chilakala
+ * @author Prat Chopra
+ * @version 9/11/2023
  */
 public class SemManagerTest extends TestCase {
     /**
@@ -20,7 +21,7 @@ public class SemManagerTest extends TestCase {
     {
         SemManager sem = new SemManager();
         assertNotNull(sem);
-        SemManager.main(null);
+        //SemManager.main(null);
     }
 }
 
