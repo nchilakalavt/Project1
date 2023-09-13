@@ -38,5 +38,7 @@ public class Record {
     public int getLength() {
         return this.length;
     }
+    
+
 
 }

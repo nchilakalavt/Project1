@@ -131,7 +131,18 @@ public class HashTable {
         
     }
     public String toString() {
-        return null;
+        String retString = "Hashtable:";
+        for (int i = 0; i <lister.length; i++) {
+            int j = i+1;
+            if (lister[i] != null && lister[i].getID() != -1) {
+                
+                retString += "\n" + j + ": " + lister[i].getID();
+            }
+            else if(lister[i] != null && lister[i].getID() == -1) {
+                retString+= "\n" + j + ": TOMBSTONE";
+            }
+        }
+        return retString;
     }
 
 

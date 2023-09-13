@@ -15,7 +15,7 @@ public class HashTableTest extends TestCase{
     private HashTable h2 = new HashTable(1);
     
     public void testInsert() {
-        Seminar tester = new Seminar(1, "Seminar Title", "2405231000", 1,
+       Seminar tester = new Seminar(1, "Seminar Title", "2405231000", 1,
             (short)15, (short)33, 125, keywords, "This is a great seminar");
        Record testr = new Record(tester, 0);
        HashTable testhash = new HashTable(10);
@@ -80,6 +80,20 @@ public class HashTableTest extends TestCase{
         
         HashTable h5 = new HashTable(4);
         assertEquals(h5.delete(r), "Hash Table is empty");
+    }
+    
+    public void testToString() {
+        HashTable hString = new HashTable(4);
+        hString.hashInsert(r);
+        hString.hashInsert(r2);
+        Seminar tester = new Seminar(1000, "Seminar Title", "2405231000", 1,
+            (short)15, (short)33, 125, keywords, "This is a great seminar");
+       Record testr = new Record(tester, 0);
+       hString.hashInsert(testr);
+       
+       assertEquals(hString.toString(), "Hashtable:\n1: 1000\n2: 1729\n4: 1739");
+       hString.delete(r2);
+       assertEquals(hString.toString(), "Hashtable:\n1: 1000\n2: 1729\n4: TOMBSTONE");
     }
 
 

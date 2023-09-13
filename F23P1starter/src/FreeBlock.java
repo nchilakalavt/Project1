@@ -9,7 +9,7 @@ public class FreeBlock {
         int listSize = size;
     }
     
-    public void append(int blockSize) {
+    public int append(int blockSize) {
         int insertIndex = (int)(Math.log(blockSize)/Math.log(2));
         
         if (list.getNodeAtIndex(insertIndex) != null) { //checks if current array spot is empty
@@ -26,6 +26,7 @@ public class FreeBlock {
         else {
             list.add(insertIndex);
         }
+        return insertIndex;
     }
     
     public void remove() {

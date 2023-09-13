@@ -11,13 +11,13 @@ public class MemManager {
     }
     // Insert a record and return its position handle.
     // space contains the record to be inserted, of length size.
-    public Record insert(byte[] space, int size) {
+    public int insert(byte[] space, int size) {
         pool.insert(size, space);
-        free.append(size, space);
+        return free.append(size);
     }
     // Return the length of the record associated with theHandle
     public int length(Record theRecord) {
-        theRecord.getLength();
+        return theRecord.getLength();
     }
     // Free a block at the position specified by theHandle.
     // Merge adjacent free blocks.

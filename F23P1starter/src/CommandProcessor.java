@@ -65,7 +65,8 @@ public class CommandProcessor {
                             insertLines[j] = lines[j];
                         }
                         
-                        Record r = new Record(commandProcessorInsert(insertLines), 0);
+                        Record r = new 
+                            Record(commandProcessorInsert(insertLines), mem.insert(commandProcessorInsert(insertLines).serialize(), ));
                         hash.hashInsert(r);
                         
                         i+=5;
@@ -118,20 +119,17 @@ public class CommandProcessor {
      * @param File inputfile
      */
     public Seminar commandProcessorInsert(String[] lines) {
-        String lineOne = File.nextLine();
-        String[] valueLineOne = lineOne.split(" ");
+        String[] valueLineOne = lines[0].split(" ");
         this.id = Integer.parseInt(valueLineOne[1]); //Setting ID
-        this.title = File.nextLine();
-        String lineThree = File.nextLine();
-        String[] valuesLineThree = lineThree.split(" ");
+        this.title = lines[1];
+        String[] valuesLineThree = lines[2].split(" ");
         this.date = valuesLineThree[0];
         this.length = Integer.parseInt(valuesLineThree[1]);
         this.x = Short.parseShort(valuesLineThree[2]);
         this.y = Short.parseShort(valuesLineThree[3]);
         this.cost = Integer.parseInt(valuesLineThree[4]);
-        String lineFour = File.nextLine();
-        this.keywords = lineFour.split(" ");
-        this.desc = File.nextLine();
+        this.keywords = lines[3].split(" ");
+        this.desc = lines[4];
         
         Seminar retSem = new Seminar(this.id, this.title, this.date, this.length, this.x,
         this.y, this.cost, this.keywords, this.desc);
