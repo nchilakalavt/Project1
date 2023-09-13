@@ -3,14 +3,17 @@ public class MemManager {
  // Constructor. poolsize defines the size of the memory pool in bytes
     private int size;
     private MemPool pool;
+    private FreeBlock free;
     
     public MemManager(int poolsize){
-        
+        free = new FreeBlock(poolsize);
+        pool = new MemPool(poolsize);
     }
     // Insert a record and return its position handle.
     // space contains the record to be inserted, of length size.
     public Record insert(byte[] space, int size) {
         pool.insert(size, space);
+        free.append(size, space);
     }
     // Return the length of the record associated with theHandle
     public int length(Record theRecord) {
@@ -18,7 +21,7 @@ public class MemManager {
     }
     // Free a block at the position specified by theHandle.
     // Merge adjacent free blocks.
-    void remove(Record theRecord) {
+    public void remove(Record theRecord) {
         
     }
     // Return the record with handle posHandle, up to size bytes, by

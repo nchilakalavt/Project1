@@ -228,7 +228,7 @@ public class DLList<E> {
      * @param index
      * @return node at index
      */
-    private Node<E> getNodeAtIndex(int index) {
+    public Node<E> getNodeAtIndex(int index) {
         if (index < 0 || size() <= index) {
             throw new IndexOutOfBoundsException("No element exists at " 
                     + index);

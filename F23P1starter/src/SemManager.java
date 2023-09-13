@@ -38,8 +38,10 @@ public class SemManager {
      */
     public static void main(String[] args) {
         // This is the main file for the program.
-        Seminar dum = new Seminar();
-        String filename = args[2];
-        CommandProcessor Reader = new CommandProcessor(filename);
+        MemManager manager = new MemManager(Integer.parseInt(args[0]));
+        HashTable hash = new HashTable(Integer.parseInt(args[1]));
+        CommandProcessor Reader = new CommandProcessor(args[2]);
+        
+        
     }
 }

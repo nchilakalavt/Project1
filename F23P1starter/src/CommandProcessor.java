@@ -16,6 +16,8 @@ public class CommandProcessor {
     private String desc; // Seminar description
     private int cost; // Seminar cost
     private String file;
+    private HashTable hash;
+    private MemManager mem;
     //String filename;
     
     /**
@@ -31,7 +33,9 @@ public class CommandProcessor {
      * Scans the input file 
      * @param String for filename
      */
-    public CommandProcessor(String inputFile) {
+    public CommandProcessor(int memManagerSize, int hashTableSize, String inputFile) {
+       mem = new MemManager(memManagerSize);
+       hash = new HashTable(hashTableSize);
        this.file = inputFile;
     }
     /**
@@ -41,7 +45,6 @@ public class CommandProcessor {
     public void processor() {
   
             String filePath = file;
-
             try {
                 // Read the file into a byte array
                 byte[] fileBytes = Files.readAllBytes(Paths.get(filePath));
@@ -50,7 +53,42 @@ public class CommandProcessor {
                 String fileContent = new String(fileBytes, StandardCharsets.UTF_8);
 
                 // Now, 'fileContent' contains the contents of the text file as a String
-                System.out.println(fileContent);
+                
+                String[] lines = fileContent.split("\\r?\\n");
+                String[] line;
+                int i = 0;
+                while (i<lines.length) {
+                    line = lines[i].split(" ");
+                    if (line[0].equals("insert")){
+                        String[] insertLines = new String[5];
+                        for (int j = i; j < i+5; j++) {
+                            insertLines[j] = lines[j];
+                        }
+                        
+                        Record r = new Record(commandProcessorInsert(insertLines), 0);
+                        hash.hashInsert(r);
+                        
+                        i+=5;
+                    }
+                    else if (line[0].equals("print")) {
+                        if(line[1].equals("hashTable")) {
+                            
+                            i++;
+                        }
+                        else {
+                            i++;
+                        }
+                    }
+                    else if (line[0].equals("delete")) {
+                        i++;
+                    }
+                    else if (line[0].equals("search")) {
+                        i++;
+                    }
+                    else {
+                        i++;
+                    }
+                }
             }
             
             catch (IOException e){
@@ -79,7 +117,7 @@ public class CommandProcessor {
      * Insert command for command processor
      * @param File inputfile
      */
-    /**public Seminar commandProcessorInsert(File File) {
+    public Seminar commandProcessorInsert(String[] lines) {
         String lineOne = File.nextLine();
         String[] valueLineOne = lineOne.split(" ");
         this.id = Integer.parseInt(valueLineOne[1]); //Setting ID
@@ -100,7 +138,7 @@ public class CommandProcessor {
         return retSem;
     }
     
-    public String commandProcessorInsert(File File) {
+    /**public String commandProcessorInsert(File File) {
         String lineOne = File.nextLine();
         String[] valueLineOne = lineOne.split(" ");
         String id = valueLineOne[1]; //Setting ID
@@ -123,14 +161,14 @@ public class CommandProcessor {
      * Delete command for command processor
      * @param File inputfile
      */
-    public String commandProcessorDelete(File File) {
+    public String commandProcessorDelete(int File) {
         return null;
     }
     /**
      * Search command for command processor
      * @param File inputfile
      */
-    public String commandProcessorSearch(File File) {
+    public String commandProcessorSearch(int File) {
         return null;
     }
     
