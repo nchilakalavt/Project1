@@ -16,8 +16,7 @@ public class CommandProcessor {
     private String desc; // Seminar description
     private int cost; // Seminar cost
     private String file;
-    private HashTable hash;
-    private MemManager mem;
+    private SemDatabase semDatabase;
     //String filename;
     
     /**
@@ -34,8 +33,7 @@ public class CommandProcessor {
      * @param String for filename
      */
     public CommandProcessor(int memManagerSize, int hashTableSize, String inputFile) {
-       mem = new MemManager(memManagerSize);
-       hash = new HashTable(hashTableSize);
+       semDatabase = new SemDatabase(memManagerSize, hashTableSize);
        this.file = inputFile;
     }
     /**
@@ -64,19 +62,16 @@ public class CommandProcessor {
                         for (int j = i; j < i+5; j++) {
                             insertLines[j] = lines[j];
                         }
-                        
-                        Record r = new 
-                            Record(commandProcessorInsert(insertLines), mem.insert(commandProcessorInsert(insertLines).serialize(), ));
-                        hash.hashInsert(r);
-                        
+                        semDatabase.commandProcessorInsert(insertLines);
                         i+=5;
                     }
                     else if (line[0].equals("print")) {
                         if(line[1].equals("hashTable")) {
-                            
+                            semDatabase.printHashTable();
                             i++;
                         }
                         else {
+                            
                             i++;
                         }
                     }
@@ -114,27 +109,7 @@ public class CommandProcessor {
             return null;
         }**/
     }
-    /**
-     * Insert command for command processor
-     * @param File inputfile
-     */
-    public Seminar commandProcessorInsert(String[] lines) {
-        String[] valueLineOne = lines[0].split(" ");
-        this.id = Integer.parseInt(valueLineOne[1]); //Setting ID
-        this.title = lines[1];
-        String[] valuesLineThree = lines[2].split(" ");
-        this.date = valuesLineThree[0];
-        this.length = Integer.parseInt(valuesLineThree[1]);
-        this.x = Short.parseShort(valuesLineThree[2]);
-        this.y = Short.parseShort(valuesLineThree[3]);
-        this.cost = Integer.parseInt(valuesLineThree[4]);
-        this.keywords = lines[3].split(" ");
-        this.desc = lines[4];
-        
-        Seminar retSem = new Seminar(this.id, this.title, this.date, this.length, this.x,
-        this.y, this.cost, this.keywords, this.desc);
-        return retSem;
-    }
+
     
     /**public String commandProcessorInsert(File File) {
         String lineOne = File.nextLine();
