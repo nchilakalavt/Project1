@@ -17,13 +17,12 @@ public class Record {
     }
 
     public int getID() {
-        // TODO Auto-generated method stub
         return this.id;
     }
     
-    public Seminar getSeminar() {
+    /**public Seminar getSeminar() {
         return S;
-    }
+    }**/
     
     public void setID(int idToSet) {
         id = idToSet;

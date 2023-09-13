@@ -130,6 +130,9 @@ public class HashTable {
         }*/
         
     }
+    public String toString() {
+        
+    }
 
 
 }

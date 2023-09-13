@@ -9,15 +9,15 @@ public class HashTableTest extends TestCase{
         (short)15, (short)33, 125, keywords, "This is a great seminar");
     private Seminar mysem3 = new Seminar(1639, "Seminar Title", "2405231000", 1,
         (short)15, (short)33, 125, keywords, "This is a great seminar");
-    private Record r = new Record(mysem); // id = 1729
-    private Record r2 = new Record(mysem2); // id = 1739
+    private Record r = new Record(mysem, 0); // id = 1729
+    private Record r2 = new Record(mysem2, 0); // id = 1739
     private HashTable h = new HashTable(2);
     private HashTable h2 = new HashTable(1);
     
     public void testInsert() {
         Seminar tester = new Seminar(1, "Seminar Title", "2405231000", 1,
             (short)15, (short)33, 125, keywords, "This is a great seminar");
-       Record testr = new Record(tester);
+       Record testr = new Record(tester, 0);
        HashTable testhash = new HashTable(10);
        testhash.hashInsert(r);
        testhash.hashInsert(r2);
@@ -47,7 +47,7 @@ public class HashTableTest extends TestCase{
         Record r2 = new Record(mysem2, 0);
         h10.hashInsert(r2);
         Record r3 = new Record(mysem3, 1);
-        assertEquals(r3.getSeminar(), mysem3);
+        //assertEquals(r3.getSeminar(), mysem3);
         h10.delete(r2);
         h10.hashInsert(r3);
         assertEquals(h10.search(1639), r3);

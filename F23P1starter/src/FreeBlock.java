@@ -4,7 +4,7 @@ public class FreeBlock {
     int blocksize;
     
     public FreeBlock(int size) {
-        list = new DLL<Byte>();
+        list = new DLList<Byte>();
         int blocksize = size;
     }
     
@@ -12,4 +12,6 @@ public class FreeBlock {
         int position = pos;
         
     }
+    
+    
 }
