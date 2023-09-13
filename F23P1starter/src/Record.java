@@ -1,19 +1,12 @@
 public class Record {
     public int id;
-    public Seminar S;
-    public int length;
-    public int pos;
+   public Handle H;
+ 
     
-    public Record(Seminar s,int p) {
-          try {
-            length = s.serialize().length;
-        }
-        catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-          id = s.getID();
-          pos = p;
+    public Record(Handle h,int ID) {
+     
+          id = ID;
+          H = h;
     }
 
     public int getID() {
@@ -28,17 +21,11 @@ public class Record {
         id = idToSet;
     }
     
+    public Handle getHandle() {
+        return H;
+    }
     //getSeminar
     //getiD 
-    public int getPos() {
-        return this.pos;
-    }
    
-
-    public int getLength() {
-        return this.length;
-    }
-    
-
 
 }

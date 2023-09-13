@@ -3,21 +3,24 @@ import  student.TestCase;
 
 public class HashTableTest extends TestCase{
     private String[] keywords = {"Good", "Bad", "Ugly"};
-    private Seminar mysem = new Seminar(1729, "Seminar Title", "2405231000", 1,
+   /* private Seminar mysem = new Seminar(1729, "Seminar Title", "2405231000", 1,
         (short)15, (short)33, 125, keywords, "This is a great seminar");
     private Seminar mysem2 = new Seminar(1739, "Seminar Title", "2405231000", 1,
         (short)15, (short)33, 125, keywords, "This is a great seminar");
     private Seminar mysem3 = new Seminar(1639, "Seminar Title", "2405231000", 1,
-        (short)15, (short)33, 125, keywords, "This is a great seminar");
-    private Record r = new Record(mysem, 0); // id = 1729
-    private Record r2 = new Record(mysem2, 0); // id = 1739
+        (short)15, (short)33, 125, keywords, "This is a great seminar");*/
+    private Handle han= new Handle(3, 20);
+    private Handle han2= new Handle(3, 20);
+    private Record r = new Record(han, 1729); // id = 1729
+    private Record r2 = new Record(han2, 1739); // id = 1739
     private HashTable h = new HashTable(2);
     private HashTable h2 = new HashTable(1);
     
     public void testInsert() {
-       Seminar tester = new Seminar(1, "Seminar Title", "2405231000", 1,
-            (short)15, (short)33, 125, keywords, "This is a great seminar");
-       Record testr = new Record(tester, 0);
+     /*   Seminar tester = new Seminar(1, "Seminar Title", "2405231000", 1,
+            (short)15, (short)33, 125, keywords, "This is a great seminar");*/
+       Handle hanpan = new Handle(3,20);
+       Record testr = new Record(hanpan, 1);
        HashTable testhash = new HashTable(10);
        testhash.hashInsert(r);
        testhash.hashInsert(r2);
@@ -27,9 +30,10 @@ public class HashTableTest extends TestCase{
        
        HashTable h69 = new HashTable(10);
        h69.hashInsert(testr);
-       Seminar sameIdTesterSem = new Seminar(1, "Seminar Title", "2405231000", 1,
-           (short)15, (short)33, 125, keywords, "This is a great seminar");
-       Record sameIdTesterRec = new Record(sameIdTesterSem, 1);
+     //  Seminar sameIdTesterSem = new Seminar(1, "Seminar Title", "2405231000", 1,
+      //     (short)15, (short)33, 125, keywords, "This is a great seminar");
+       Handle sameAs = new Handle(3, 20);
+       Record sameIdTesterRec = new Record(sameAs, 1);
        h69.hashInsert(sameIdTesterRec);
     }
     public void testSearch() {
@@ -44,19 +48,20 @@ public class HashTableTest extends TestCase{
         
         HashTable h10 = new HashTable(10);
         h10.hashInsert(r);
-        Record r2 = new Record(mysem2, 0);
+        Record r2 = new Record(han, 1739);
         h10.hashInsert(r2);
-        Record r3 = new Record(mysem3, 1);
-        //assertEquals(r3.getSeminar(), mysem3);
+        Record r3 = new Record(han2, 1639);
+      //  assertEquals(r3.getSeminar(), mysem3);
         h10.delete(r2);
         h10.hashInsert(r3);
         assertEquals(h10.search(1639), r3);
         
         HashTable h11 = new HashTable(10);
         h11.hashInsert(r);
-        Record r4 = new Record(mysem2, 0);
+        Handle hon = new Handle(3, 23);
+        Record r4 = new Record(han, 1739);
         h11.hashInsert(r4);
-        Record r5 = new Record(mysem3, 1);
+        Record r5 = new Record(hon, 1639);
         h11.hashInsert(r5);
         assertEquals(h11.search(1639), null);
         
@@ -80,20 +85,6 @@ public class HashTableTest extends TestCase{
         
         HashTable h5 = new HashTable(4);
         assertEquals(h5.delete(r), "Hash Table is empty");
-    }
-    
-    public void testToString() {
-        HashTable hString = new HashTable(4);
-        hString.hashInsert(r);
-        hString.hashInsert(r2);
-        Seminar tester = new Seminar(1000, "Seminar Title", "2405231000", 1,
-            (short)15, (short)33, 125, keywords, "This is a great seminar");
-       Record testr = new Record(tester, 0);
-       hString.hashInsert(testr);
-       
-       assertEquals(hString.toString(), "Hashtable:\n1: 1000\n2: 1729\n4: 1739");
-       hString.delete(r2);
-       assertEquals(hString.toString(), "Hashtable:\n1: 1000\n2: 1729\n4: TOMBSTONE");
     }
 
 
