@@ -5,6 +5,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import java.io.File;
+import java.util.Scanner;
 public class CommandProcessor {
     private int id;
     private String title;
@@ -16,8 +18,73 @@ public class CommandProcessor {
     private String desc; // Seminar description
     private int cost; // Seminar cost
     private String file;
-    private SemDatabase semDatabase;
+    private HashTable hash;
+    private MemManager mem;
+    private SemDatabase semdata;
     //String filename;
+
+
+
+       /**
+        * @param args
+        */
+       
+       
+       public void beginParsing(String filename) {
+          try {
+             SemDatabase semdata = new SemDatabase(hash, mem);
+             Scanner sc = new Scanner(new File(filename));//Create our new scanner
+             while(sc.hasNext()) {//While the scanner has information to read
+                String cmd = sc.next();//Read the next te
+                switch(cmd) {
+                   case "insert" :
+                       id = sc.nextInt();
+                       sc.nextLine();
+                       title = sc.nextLine();
+                       date = sc.next();
+                       length = sc.nextInt();
+                       x =sc.nextShort();
+                       y = sc.nextShort();
+                       cost = sc.nextInt();
+                       sc.nextLine();
+                       String key = sc.nextLine();
+                       keywords = key.split(" "); 
+                       desc = sc.nextLine();
+                       Seminar sem = new Seminar(id, title, date , length, x, y, cost, keywords, desc);
+                       semdata.insert(sem);
+                       
+                       
+                   break;
+                   case "print" ://Found an add command
+                     if(sc.next().equals("hashtable")) {
+                      semdata.printHash();
+                     }
+                     else if(sc.next().equals("blocks")) {
+                         semdata.printBlock();
+                     }
+                     else {
+                         break;
+                     }
+                   break;
+                   case "delete" ://Found a delete command
+                      id = sc.nextInt();
+                      semdata.delete(id);
+                   break;
+                   case "search" ://Found a search command
+                       id = sc.nextInt();
+                       semdata.searcher(id);
+                       
+                   break;
+                   default ://Found an unrecognized command
+                      System.out.println("Unrecognized input "+cmd);
+                   break;
+                }
+             }
+          } catch (Exception e) {
+             e.printStackTrace();
+          }
+       
+
     
     /**
      * Loads the CommandProcessor object 
@@ -32,14 +99,19 @@ public class CommandProcessor {
      * Scans the input file 
      * @param String for filename
      */
+    /*
     public CommandProcessor(int memManagerSize, int hashTableSize, String inputFile) {
-       semDatabase = new SemDatabase(memManagerSize, hashTableSize);
+       mem = new MemManager(memManagerSize);
+       hash = new HashTable(hashTableSize);
        this.file = inputFile;
     }
     /**
      * Checks if command is insert, search, or delete
      * @param File object for filename
+     
+     *
      */
+    /**
     public void processor() {
   
             String filePath = file;
@@ -62,16 +134,19 @@ public class CommandProcessor {
                         for (int j = i; j < i+5; j++) {
                             insertLines[j] = lines[j];
                         }
-                        semDatabase.commandProcessorInsert(insertLines);
+                        
+                        Record r = new 
+                            Record(commandProcessorInsert(insertLines), mem.insert(commandProcessorInsert(insertLines).serialize()));
+                        hash.hashInsert(r);
+                        
                         i+=5;
                     }
                     else if (line[0].equals("print")) {
                         if(line[1].equals("hashTable")) {
-                            semDatabase.printHashTable();
+                            
                             i++;
                         }
                         else {
-                            
                             i++;
                         }
                     }
@@ -109,7 +184,27 @@ public class CommandProcessor {
             return null;
         }**/
     }
-
+    /**
+     * Insert command for command processor
+     * @param File inputfile
+     */
+   /** public Seminar commandProcessorInsert(String[] lines) {
+        String[] valueLineOne = lines[0].split(" ");
+        this.id = Integer.parseInt(valueLineOne[1]); //Setting ID
+        this.title = lines[1];
+        String[] valuesLineThree = lines[2].split(" ");
+        this.date = valuesLineThree[0];
+        this.length = Integer.parseInt(valuesLineThree[1]);
+        this.x = Short.parseShort(valuesLineThree[2]);
+        this.y = Short.parseShort(valuesLineThree[3]);
+        this.cost = Integer.parseInt(valuesLineThree[4]);
+        this.keywords = lines[3].split(" ");
+        this.desc = lines[4];
+        
+        Seminar retSem = new Seminar(this.id, this.title, this.date, this.length, this.x,
+        this.y, this.cost, this.keywords, this.desc);
+        return retSem;
+    }
     
     /**public String commandProcessorInsert(File File) {
         String lineOne = File.nextLine();
@@ -134,20 +229,61 @@ public class CommandProcessor {
      * Delete command for command processor
      * @param File inputfile
      */
-    public String commandProcessorDelete(int File) {
-        return null;
-    }
-    /**
-     * Search command for command processor
-     * @param File inputfile
-     */
-    public String commandProcessorSearch(int File) {
-        return null;
-    }
+   // public String commandProcessorDelete(int File) {
+   //     return null;
+   // }
+   // /**
+    // * Search command for command processor
+   //  * @param File inputfile
+    // */
+   // public String commandProcessorSearch(int File) {
+   //     return null;
+  //  }
     
-    public String getFile() {
-        return this.file;
-    }
+   // public String getFile() {
+   //     return this.file;
+   // }
     
 }
+//    
+//    public String commandProcessorInsert(File File) {
+//        String lineOne = File.nextLine();
+//        String[] valueLineOne = lineOne.split(" ");
+//        String id = valueLineOne[1]; //Setting ID
+//        String title = File.nextLine();
+//        String lineThree = File.nextLine();
+//        String[] valuesLineThree = lineThree.split(" ");
+//        String date = valuesLineThree[0];
+//        String length = valuesLineThree[1];
+//        String x = valuesLineThree[2];
+//        String y = valuesLineThree[3];
+//        String cost = valuesLineThree[4];
+//        String lineFour = File.nextLine();
+//        String[] keywords = lineFour.split(" ");
+//        String desc = File.nextLine();
+//        return id + ", " + title + ", " + date + ", " + 
+//            length + ", " + x + ", " + y + ", " + cost + ", " + keywords + ", " + desc;
+//    }
+//    
+//    /**
+//     * Delete command for command processor
+//     * @param File inputfile
+//     */
+//    public String commandProcessorDelete(File File) {
+//        return null;
+//    }
+//    /**
+//     * Search command for command processor
+//     * @param File inputfile
+//     */
+//    public String commandProcessorSearch(File File) {
+//        return null;
+//    }
+//    
+//    public String getFile() {
+//        return this.file;
+//    }*/
+//    
+
+//}
 
