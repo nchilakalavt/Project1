@@ -105,11 +105,11 @@ public class HashTable {
      * @param r:  Record to be deleted
      * @return the record that matches the given ID
      */
-    public String delete(Record r) {
+    public String delete(int id) {
         if (counter ==0) {
            return "Hash Table is empty"; 
         }
-        int id = r.getID();
+        //int id = r.getID();
         tombstone = this.search(id);
         int homeSlot = id % lister.length;
         if (tombstone != null) {

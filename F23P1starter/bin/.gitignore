@@ -4,12 +4,10 @@
 /DLList$Node.class
 /DLList.class
 /DLListTest.class
-/FreeBlock.class
 /Handle.class
 /HashTable.class
 /HashTableTest.class
 /MemManager.class
-/MemPool.class
 /P1Sample_input.txt
 /Record.class
 /SemDatabase.class
