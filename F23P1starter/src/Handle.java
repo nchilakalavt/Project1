@@ -25,5 +25,10 @@ public class Handle {
         return this.endPos;
     }
     
+    public int getLength() {
+        return startPos - endPos;
+    }
+
+    
 
 }
