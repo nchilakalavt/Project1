@@ -1,9 +1,10 @@
 
 public class Handle {
-    public int pos;
-    public int length;
+    private int startPos;
+    private int endPos;
 
-    public Handle(int p,int l ) {
+
+    public Handle(int startPos, int endPos) {
        /** try {
             length = s.
         }
@@ -11,15 +12,18 @@ public class Handle {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }*/
-        length = l;
-        pos = p;
-    }
-    public int getPos() {
-        return this.pos;
-    }
-   
 
-    public int getLength() {
-        return this.length;
+        this.startPos = startPos;
+        this.endPos = endPos;
     }
+    public int getStartPos() {
+        return this.startPos;
+    }
+
+    
+    public int getEndPos() {
+        return this.endPos;
+    }
+    
+
 }
