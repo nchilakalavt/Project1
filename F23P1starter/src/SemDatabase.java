@@ -9,8 +9,6 @@ public class SemDatabase {
         
     }
     public void delete(int key) {
-        //Handle h = new Handle(3, 20);// 3 , 20 r dummy values
-        //Record r = new Record(h , key);
         Record r = hash.search(key);
         hash.delete(key);
         m.remove(r.getHandle());
@@ -28,7 +26,18 @@ public class SemDatabase {
     public void searcher(int ID) {
 //        Handle h = new Handle(3, 20);// 3 , 20 r dummy values
 //        Record r = new Record(h, ID);
-        if (hash.search(ID) != null) {
+        Record r = hash.search(ID);
+        if (r != null) {
+            byte[] arr = new byte[r.getHandle().getLength()];
+            m.get(arr, r.getHandle(), ID);
+            try {
+                Seminar s = Seminar.deserialize(arr);
+                System.out.println(s.toString());
+            }
+            catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
             
         }
         else {
@@ -37,10 +46,10 @@ public class SemDatabase {
         
     }
     public void printHash() {
-        hash.toString();
+        System.out.println(hash.toString());
     }
     public void printBlock() {
-        
+        m.dump();
     }
     
 }

@@ -36,7 +36,7 @@ public class MemManager {
         Handle retHand = new 
             Handle(free.get(temp).getStart(), free.get(temp).getStart()+size);
         free.remove(free.get(temp));
-        merge();
+        //merge();
         return retHand;
     }
 
@@ -77,28 +77,32 @@ public class MemManager {
     // Return the record with handle posHandle, up to size bytes, by
     // copying it into space.
     // Return the number of bytes actually copied into space.
-    public byte[] get() {
-        return pool;
+    public int get(byte[] space, Handle theHandle, int size) {
+        System.arraycopy(pool, theHandle.getStartPos(), space, 0, size);
+        return space.length;
     }
 
 
     // Dump a printout of the freeblock list
     public void dump() {
         for (int i = 0; i < free.size(); i++) {
-            System.out.println(Math.pow(2, i) + ": " + free.getNodeAtIndex(i));
+            
+            System.out.println(free.get(i).getLength());
         }
     }
     
     private void merge() {
         for (int i = 0; i < free.size()-1; i++) {
-            if((free.get(i).getStart() | free.get(i).getLength()) 
-                == (free.get(i+1).getStart() | free.get(i+1).getLength())) {
-                Block addBlock = new Block(free.get(i).getStart(), free.get(i).getEnd());
-                free.remove(free.get(i));
-                free.remove(free.get(i+1));
-                merge();
+            if(free.get(i) != null && free.get(i+1) != null) {
+                if((free.get(i).getStart() | free.get(i).getLength()) 
+                    == (free.get(i+1).getStart() | free.get(i+1).getLength())) {
+                    Block addBlock = new Block(free.get(i).getStart(), free.get(i).getEnd());
+                    free.remove(free.get(i));
+                    free.remove(free.get(i+1));
+                    merge();
+                }
             }
-        }
+        }    
     }
 
     private int bestFit(int size) {

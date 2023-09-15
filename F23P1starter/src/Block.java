@@ -9,7 +9,7 @@ public class Block {
     }
     
     public int getLength() {
-        return start - end;
+        return end - start;
     }
     
     public int getStart() {
@@ -27,4 +27,5 @@ public class Block {
     public void setEnd(int endPos) {
         end = endPos;
     }
+    
 }

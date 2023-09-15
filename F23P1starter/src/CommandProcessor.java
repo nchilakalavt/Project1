@@ -17,10 +17,8 @@ public class CommandProcessor {
     private short y; // Seminar y coord
     private String desc; // Seminar description
     private int cost; // Seminar cost
-    private String file;
-    private HashTable hash;
-    private MemManager mem;
-    private SemDatabase semdata;
+    private int hashSize;
+    private int memSize;
     //String filename;
 
 
@@ -28,11 +26,15 @@ public class CommandProcessor {
        /**
         * @param args
         */
-       
+       public CommandProcessor(String[] arr) {
+           hashSize = Integer.parseInt(arr[0]);
+           memSize = Integer.parseInt(arr[1]);
+           
+       }
        
        public void beginParsing(String filename) {
           try {
-             SemDatabase semdata = new SemDatabase(hash, mem);
+             SemDatabase semdata = new SemDatabase(hashSize, memSize);
              Scanner sc = new Scanner(new File(filename));//Create our new scanner
              while(sc.hasNext()) {//While the scanner has information to read
                 String cmd = sc.next();//Read the next te
