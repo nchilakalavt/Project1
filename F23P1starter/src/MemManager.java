@@ -3,6 +3,7 @@ public class MemManager {
     // Constructor. poolsize defines the size of the memory pool in bytes
     private byte[] pool;
     private DLList<Block> free;
+    private Seminar sem;
 
     public MemManager(int poolsize) {
         free = new DLList<Block>();
@@ -43,7 +44,7 @@ public class MemManager {
     // Return the length of the record associated with theHandle
     public int length(Handle theHandle) {
         
-        return 
+        return theHandle.getLength();
     }
 
 
@@ -66,6 +67,9 @@ public class MemManager {
                 free.add(i, remBlock);
             }
         }
+        for (int i = theHandle.getStartPos(); i < theHandle.getEndPos(); i++) {
+            pool[i] = 0;
+        }
         merge();
     }
 
@@ -73,15 +77,15 @@ public class MemManager {
     // Return the record with handle posHandle, up to size bytes, by
     // copying it into space.
     // Return the number of bytes actually copied into space.
-    public int get(byte[] space, Handle theHandle, int size) {
-        return ;
+    public byte[] get() {
+        return pool;
     }
 
 
     // Dump a printout of the freeblock list
     public void dump() {
         for (int i = 0; i < free.size(); i++) {
-            System.out.println(Math.pow(2, i) + ": " + );
+            System.out.println(Math.pow(2, i) + ": " + free.getNodeAtIndex(i));
         }
     }
     
