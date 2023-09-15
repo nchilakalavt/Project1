@@ -23,8 +23,9 @@ public class MemManager {
             blockSize *= 2;
         }
         int freeIndex = bestFit(blockSize);
-        Block current = free.get(freeIndex);
-        while (current.getLength()/2 >= blockSize) {
+        
+        while (free.get(freeIndex).getLength()/2 >= blockSize) {
+            Block current = free.get(freeIndex);
             int halfLength = current.getLength()/2;
             Block halfBlock = new Block(current.getStart(), halfLength);
             Block halfBlock2 = new Block(halfLength, current.getEnd());
@@ -36,7 +37,7 @@ public class MemManager {
         Handle retHand = new 
             Handle(free.get(temp).getStart(), free.get(temp).getStart()+size);
         free.remove(free.get(temp));
-        //merge();
+        merge();
         return retHand;
     }
 
@@ -59,10 +60,10 @@ public class MemManager {
         Block remBlock = new Block(theHandle.getStartPos(), blockSize);
         int index;
         for(int i = 0; i < free.size(); i++) {
-            if (i == free.size() - 1){
-                free.add(free.size()-1, remBlock);
-            }
-            else if (Math.pow(2, i)<= theHandle.getStartPos() && 
+//            if (i == free.size() - 1){
+//                free.add(free.size()-1, remBlock);
+//            }
+             if (Math.pow(2, i)<= theHandle.getStartPos() && 
                 theHandle.getStartPos() < Math.pow(2, i+1)) {
                 free.add(i, remBlock);
             }
@@ -85,9 +86,11 @@ public class MemManager {
 
     // Dump a printout of the freeblock list
     public void dump() {
+        System.out.println("Freeblock list: ");
         for (int i = 0; i < free.size(); i++) {
             
-            System.out.println(free.get(i).getLength());
+            System.out.println(free.get(i).getLength()/(i+1) + ": " + 
+            free.get(i).getLength());
         }
     }
     
