@@ -4,11 +4,13 @@ public class MemManager {
     private byte[] pool;
     private DLList<Block> free;
     private Seminar sem;
+    private int counter;
 
     public MemManager(int poolsize) {
         free = new DLList<Block>();
         pool = new byte[poolsize];
         free.add(new Block(0, poolsize));
+        counter = 0;
     }
 
 
@@ -35,9 +37,11 @@ public class MemManager {
             
         }
         Handle retHand = new 
-            Handle(free.get(temp).getStart(), free.get(temp).getStart()+size);
+        Handle(free.get(temp).getStart(), free.get(temp).getStart()+size);
         free.remove(free.get(temp));
         merge();
+        counter++;
+        
         return retHand;
     }
 
@@ -52,26 +56,30 @@ public class MemManager {
     // Free a block at the position specified by theHandle.
     // Merge adjacent free blocks.
     public void remove(Handle theHandle) {
-        
+        if (counter == 0) {
+            System.out.println("remove failed");
+        }
         int blockSize = 1;
         while (blockSize < theHandle.getLength()) {
             blockSize *= 2;
         }
         Block remBlock = new Block(theHandle.getStartPos(), blockSize);
-        int index;
-        for(int i = 0; i < free.size(); i++) {
-//            if (i == free.size() - 1){
-//                free.add(free.size()-1, remBlock);
-//            }
-             if (Math.pow(2, i)<= theHandle.getStartPos() && 
-                theHandle.getStartPos() < Math.pow(2, i+1)) {
-                free.add(i, remBlock);
+        if (theHandle.getStartPos() == 0){
+            free.add(0, remBlock);
+        }
+        else {
+            for(int i = 0; i < free.size(); i++) {
+                if (Math.pow(2, i)<= theHandle.getStartPos() && 
+                    theHandle.getStartPos() < Math.pow(2, i+1)) {
+                    free.add(i, remBlock);
+                 }
             }
         }
         for (int i = theHandle.getStartPos(); i < theHandle.getEndPos(); i++) {
             pool[i] = 0;
         }
         merge();
+        counter--;
     }
 
 
@@ -96,7 +104,6 @@ public class MemManager {
     
     private void merge() {
         for (int i = 0; i < free.size()-1; i++) {
-            if(free.get(i) != null && free.get(i+1) != null) {
                 if((free.get(i).getStart() | free.get(i).getLength()) 
                     == (free.get(i+1).getStart() | free.get(i+1).getLength())) {
                     Block addBlock = new Block(free.get(i).getStart(), free.get(i).getEnd());
@@ -104,7 +111,6 @@ public class MemManager {
                     free.remove(free.get(i+1));
                     merge();
                 }
-            }
         }    
     }
 
@@ -115,12 +121,12 @@ public class MemManager {
             // block at index i
             Block tempBlock = free.get(i);
             
-            // if the blocks length is bigger than the size and if the blocks
+            System.out.println("tempblock size: " + tempBlock.getLength());
             if (tempBlock.getLength() > size && tempBlock.getEnd() < min) {
                 min = tempBlock.getLength();
                 index = tempBlock.getStart();
             }
-            // end value is less than the min
+
             if (index == -1) {
                 byte[] newPool = new byte[pool.length*2];
                 System.arraycopy(pool, 0, newPool, 0, pool.length);
@@ -131,6 +137,7 @@ public class MemManager {
             
         }
         // if index is -1 then resize
+        System.out.println("this is index " + index);
         return index;
     }
 }

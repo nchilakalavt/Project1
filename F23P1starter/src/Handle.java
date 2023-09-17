@@ -26,7 +26,7 @@ public class Handle {
     }
     
     public int getLength() {
-        return startPos - endPos;
+        return endPos - startPos;
     }
 
     
