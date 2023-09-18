@@ -43,19 +43,26 @@ public class HashTable {
         if(lister[homeSlot] == null || lister[homeSlot] == tombstone) {
             lister[homeSlot] = r;
         }
-        else if (lister[homeSlot].getID() == id) {
-            System.out.println("Insert Failed since another record with this id exists");
-        }
         else {
-            //while(lister[homeSlot] != null) {
+            while(lister[homeSlot] != null) {
                 int hash2 = (((id / lister.length ) % (lister.length / 2)) * 2) + 1;
                 if(lister[(homeSlot + hash2) % lister.length] == null) {
                     lister[(homeSlot + hash2) % lister.length] = r; 
-                    //break;
+                    break;
+
+                }else {
+                    homeSlot = (homeSlot + hash2) % lister.length;
+ 
                 }
-                else {
+
+            }
+        }
+        counter ++;
+   }
+              /**  else {
                     System.out.println("Hash Insert of Record " + r.getID() + " Failed.");
                 }
+            
             }
         //}
         counter += 1;
@@ -73,7 +80,7 @@ public class HashTable {
             //return null; 
          //}
         homeSlot = id % lister.length;
-        if(lister[homeSlot] == null) {
+     if(lister[homeSlot] == null) {
             return null;
         }
         if(lister[homeSlot].getID()== id ) {
@@ -81,7 +88,7 @@ public class HashTable {
             
         }
         
-        while(lister[homeSlot] != tombstone) {
+        while(lister[homeSlot] != null) {
             int hash2 = (((id / lister.length ) % (lister.length / 2)) * 2) + 1;
             
             if(lister[(homeSlot + hash2) % lister.length] == null) {
@@ -90,11 +97,8 @@ public class HashTable {
             else if(lister[(homeSlot + hash2) % lister.length].getID() == id) {
                 return lister[(homeSlot + hash2) % lister.length];
             }
-            else {
-                System.out.println("Error searching for Record with id: " + id);
-                return null;
-            }
-           
+            homeSlot = (homeSlot + hash2) % lister.length;
+  
         }
         return null;
         
