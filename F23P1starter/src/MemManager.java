@@ -50,11 +50,11 @@ public class MemManager {
      * @return int -power
      */
     private int nextPower(int size) {
-        int n = 0;
-        while ((1 << n) < size) {
-            n++;
+        int  blockSize = 1;
+        while (blockSize < size) {
+            blockSize *= 2;
         }
-        return n;
+        return blockSize;
     }
 
 
@@ -186,8 +186,8 @@ public class MemManager {
      *            -the value
      * @return log -the base 2 log
      */
-    private double log2(int value) {
-        return Math.log(value) / Math.log(2);
+    private int log2(int value) {
+        return (int)Math.log(value) / Math.log(2);
     }
 
 

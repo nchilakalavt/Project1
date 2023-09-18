@@ -198,9 +198,9 @@ public class DLList {
         }
 
         Node addition = new Node(obj);
-        addition.setPrevious(nodeAfter.previous());
+        addition.setPrevious(nodeAfter.getPrevious());
         addition.setNext(nodeAfter);
-        nodeAfter.previous().setNext(addition);
+        nodeAfter.getPrevious().setNext(addition);
         nodeAfter.setPrevious(addition);
         size++;
 
@@ -213,13 +213,13 @@ public class DLList {
      * @return node at index
      */
     public Node getNodeAtIndex(int index) {
-        if (index < 0 || size() <= index) {
+        if (index < 0 || getSize() <= index) {
             throw new IndexOutOfBoundsException("No element exists at " 
                     + index);
         }
-        Node current = head.next(); // as we have a sentinel node
+        Node current = head.getNext(); // as we have a sentinel node
         for (int i = 0; i < index; i++) {
-            current = current.next();
+            current = current.getNext();
         }
         return current;
     }
@@ -236,12 +236,12 @@ public class DLList {
          * We should go from the end of the list as then we an stop once we find
          * the first one
          */
-        Node current = tail.previous();
-        for (int i = size() - 1; i >= 0; i--) {
+        Node current = tail.getPrevious();
+        for (int i = getSize() - 1; i >= 0; i--) {
             if (current.getData() == obj) {
                 return i;
             }
-            current = current.previous();
+            current = current.getPrevious();
         }
         return -1;  //if we do not find it
     }
@@ -258,9 +258,9 @@ public class DLList {
     public int removeFirstNode() {
         if(!isEmpty()) {
             int retValue = head.data;
-            head = head.next;
+            head = head.getNext();
             if (head == null) {
-                head.previous = null;
+                head.setPrevious(null);
             }
             else {
                 tail = null;
@@ -278,15 +278,15 @@ public class DLList {
      */
 
     public boolean remove(int obj) {
-        Node current = head.next();
+        Node current = head.getNext();
         while (!current.equals(tail)) {
             if (current.getData() == obj) {
-                current.previous().setNext(current.next());
-                current.next().setPrevious(current.previous());
+                current.getPrevious().setNext(current.getNext());
+                current.getNext().setPrevious(current.getPrevious());
                 size--;
                 return true;
             }
-            current = current.next();
+            current = current.getNext();
         }
         return false;
     }
@@ -301,7 +301,7 @@ public class DLList {
     public String toString() {
         StringBuilder builder = new StringBuilder("{");
         if (!isEmpty()) {
-            Node currNode = head.next();
+            Node currNode = head.getNext();
             while (currNode != tail) {
                 int element = currNode.getData();
                 builder.append(element);

@@ -20,9 +20,9 @@ public class SemDatabaseTest extends TestCase {
 
 
     public void testInsert() {
-        private String[] keywords = { "Good", "Bad", "Ugly" };
+        String[] keywords = { "Good", "Bad", "Ugly" };
 
-        private Seminar mysem2 = new Seminar(1739, "Seminar Title",
+        Seminar mysem2 = new Seminar(1739, "Seminar Title",
             "2405231000", 1, (short)15, (short)33, 125, keywords,
             "This is a great seminar");
 
