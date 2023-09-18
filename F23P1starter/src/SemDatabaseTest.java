@@ -41,6 +41,7 @@ public class SemDatabaseTest extends TestCase {
         s.insert(mysem3); 
         s.insert(mysem10); 
         s.delete(mysem2.getID());
+        s.search(mysem2.getID());
     }
 
 

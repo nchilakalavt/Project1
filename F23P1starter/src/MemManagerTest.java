@@ -10,22 +10,19 @@ public class MemManagerTest extends TestCase{
         (short)15, (short)33, 125, keywords, "This is a great seminar");
     
     public void testInsert() throws Exception {
-        //mem.dump();
+
         mem.insert(mysem3.serialize(), mysem3.serialize().length);
-        //mem.dump();
+
         System.out.println("length: " + mysem.serialize().length);
         mem.insert(mysem.serialize(), mysem.serialize().length);
     }
     
     public void testRemove() throws Exception {
         Handle hand = new Handle(0, mysem3.serialize().length);
-//        MemManager memEmpty = new MemManager(512);
-//        memEmpty.remove(hand);
         
         mem.insert(mysem3.serialize(), mysem3.serialize().length);
         mem.insert(mysem.serialize(), mysem.serialize().length);
         mem.remove(hand);
-        //mem.dump();
         
         int length = mysem.serialize().length;
         Handle hand2 = new Handle(length, 2*length);
@@ -66,5 +63,10 @@ public class MemManagerTest extends TestCase{
         mem.dump();
         //mem2.dump(hand);
         
+    }
+    
+    public void testGetPoolSize() {
+        MemManager mem2 = new MemManager(512);
+        assertEquals(512, mem2.getPoolSize());
     }
 }

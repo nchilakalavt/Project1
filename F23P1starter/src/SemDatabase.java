@@ -8,7 +8,7 @@ public class SemDatabase {
         
     }
     public void delete(int key) {
-        if(hash.search(key)==null) {
+        if(hash.search(key)!= null) {
             hash.delete(key);
             m.remove(hash.search(key).getHandle());
             System.out.println("Record with ID " + key + 
@@ -33,19 +33,13 @@ public class SemDatabase {
         //first check in the hash table 
 
     }
-    public void search(int ID) {
+    public void search(int ID) throws Exception {
         //Record r = hash.search(ID);
         if (hash.search(ID) != null) {
             Record r = hash.search(ID);
-            try {
-                Seminar s = Seminar.deserialize(m.get(r.getHandle()));
-                System.out.println("Found Record with ID " + ID + ":");
-                System.out.println(s.toString());
-            }
-            catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+            Seminar s = Seminar.deserialize(m.get(r.getHandle()));
+            System.out.println("Found Record with ID " + ID + ":");
+            System.out.println(s.toString());
             
         }
         else {

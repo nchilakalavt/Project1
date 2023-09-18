@@ -38,24 +38,31 @@ public class HashTable {
         int homeSlot = 0;
         
         int id = r.getID();
-            //((k/M ) mod (M/2)) ∗ 2) + 1
+
         homeSlot = id % lister.length;
         if(lister[homeSlot] == null || lister[homeSlot] == tombstone) {
             lister[homeSlot] = r;
         }
-        else if (lister[homeSlot].getID() == id) {
-            System.out.println("Insert Failed since another record with this id exists");
-        }
         else {
-            //while(lister[homeSlot] != null) {
+            while(lister[homeSlot] != null) {
                 int hash2 = (((id / lister.length ) % (lister.length / 2)) * 2) + 1;
                 if(lister[(homeSlot + hash2) % lister.length] == null) {
                     lister[(homeSlot + hash2) % lister.length] = r; 
-                    //break;
+                    break;
+
+                }else {
+                    homeSlot = (homeSlot + hash2) % lister.length;
+ 
                 }
-                else {
+
+            }
+        }
+        counter ++;
+   }
+              /**  else {
                     System.out.println("Hash Insert of Record " + r.getID() + " Failed.");
                 }
+            
             }
         //}
         counter += 1;
@@ -69,11 +76,8 @@ public class HashTable {
      */
     public Record search(int id) {
         int homeSlot = 0;
-        //if (counter ==0) {
-            //return null; 
-         //}
         homeSlot = id % lister.length;
-        if(lister[homeSlot] == null) {
+     if(lister[homeSlot] == null) {
             return null;
         }
         if(lister[homeSlot].getID()== id ) {
@@ -90,10 +94,8 @@ public class HashTable {
             else if(lister[(homeSlot + hash2) % lister.length].getID() == id) {
                 return lister[(homeSlot + hash2) % lister.length];
             }
-            else {
-                System.out.println("Error Searching");
-                return null;
-            }
+            homeSlot = (homeSlot + hash2) % lister.length;
+  
         }
         return null;
         
@@ -101,36 +103,35 @@ public class HashTable {
     
     /**
      * Delete method for hash table
-     * @param Id value to be updated
+     * 
+     * @param Id
+     *            value to be updated
      * @return the record that matches the given ID
      */
     public String delete(int id) {
-        if (counter ==0) {
-           return "Hash Table is empty"; 
+        if (counter == 0) {
+            return "Hash Table is empty";
         }
-        //int id = key.getID();
-        tombstone = this.search(id);
+        Record deleter = this.search(id);
         int homeSlot = id % lister.length;
-        if (tombstone != null) {
-            tombstone.setID(-1);
-            lister[homeSlot] = tombstone;
-            return "Record with ID " + id + " has been deleted";
-        }
-        else {
-            return "Record with ID " + id + " not found.";
-        }
-        /*while(lister[homeSlot] != tombstone) {
-            int hash2 = (((id / lister.length ) % (lister.length / 2)) * 2) + 1;
-            if(lister[(homeSlot + hash2) % lister.length].getID() == id) {
-               lister[(homeSlot + hash2) % lister.length] = tombstone;
-            }
-        
+        if (lister[homeSlot] == deleter) {
             
-        }*/
-        
-    }
-    
+        }
+        while (lister[homeSlot] != null) {
+            int hash2 = (((id / lister.length) % (lister.length / 2)) * 2) + 1;
 
+            if (lister[(homeSlot + hash2) % lister.length] == null) {
+                return "Record with ID " + id + " not found.";
+            }
+            else if (lister[(homeSlot + hash2) % lister.length] == deleter) {
+                lister[(homeSlot + hash2) % lister.length] = deleter;
+                return "Record with ID " + id + " has been deleted";
+            }
+            homeSlot = (homeSlot + hash2) % lister.length;
+
+        }
+        return null;
+    }
     /**
      * Tostring is a function to print out the contents of the hashtable
      * 
@@ -138,24 +139,20 @@ public class HashTable {
      */
     public String toString() {
         String retString = "Hashtable:";
-        int totalRecords = 0;
         for (int i = 0; i < lister.length; i++) {
-            int j = i;
+            int j = i + 1;
             if (lister[i] != null) {
                 if (lister[i].getID() != -1) {
-                    totalRecords++;
+
                     retString += "\n" + j + ": " + lister[i].getID();
                 }
                // else if (lister[i].getID() == -1) {
                 else {
-                    totalRecords++;
                     retString += "\n" + j + ": TOMBSTONE";
                 }
             }
-            
         }
-        
-        return retString + "\ntotal records: " + totalRecords;
+        return retString;
     }
 
 }

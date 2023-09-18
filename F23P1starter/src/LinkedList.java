@@ -1,50 +1,35 @@
-/**
- * LinkedList class
- * 
- * @version 1.0
- * @author xavier0ne keshr
- */
-public class LinkedList {
-    /**
+ /**
      * Node for linkedlist
      * 
-     * @author keshr
+     * @author nchilakala
      * @version 1
      */
+public class LinkedList {
+   
     public class Node {
-     
-        private Node next;
-        
-        private Node prev;
-       
+        private Node previousNode;
+        private Node nextNode;
         private int data;
 
-        /**
-         * NodeConstructor
-         * 
-         * @param data
-         *            -the data
-         */
-        public Node(int data) {
-            this.data = data;
-            this.next = null;
-            this.prev = null;
+        
+        public Node(int info) {
+            this.data = info;
+            this.nextNode = null;
+            this.previousNode = null;
         }
 
-        /**
-         * get Node next
-         * @return Node next
-         */
-        public Node getNext() {
-            return next;
+       
+        public Node getNextNode() {
+            return nextNode;
         }
+        
 
         /**
          * get Node prev
          * @return Node prev
          */
-        public Node getPrev() {
-            return prev;
+        public Node getPreviousNode() {
+            return previousNode;
         }
 
          /**
@@ -63,32 +48,22 @@ public class LinkedList {
     private Node head;
     private Node tail;
 
-    /**
-     * Constructor
-     */
+    
     public LinkedList() {
         this.head = null;
         this.tail = null;
     }
 
 
-    /**
-     * add method
-     * 
-     * @param data
-     *            -the data
-     */
     public void add(int data) {
-
         Node newNode = new Node(data);
-
         if (head == null) {
             head = newNode;
             tail = newNode;
         }
         else {
-            tail.next = newNode;
-            newNode.prev = tail;
+            tail.nextNode = newNode;
+            newNode.previousNode = tail;
             tail = newNode;
         }
     }
@@ -104,100 +79,82 @@ public class LinkedList {
             throw new IllegalStateException("Empty Lists");
         }
 
-        int val = head.data;
-        head = head.next;
-        if (head != null) {
-            head.prev = null;
+        int removal = head.data;
+        head = head.nextNode;
+        if (head == null) {
+            tail = null;
+           
         }
         else {
-            tail = null;
+            head.previousNode = null;
         }
-        return val;
+        return removal;
     }
 
 
-    /**
-     * isEmpty method
-     * 
-     * @return boolean -true if empty
-     */
+   
     public boolean isEmpty() {
         return head == null;
     }
 
 
-    /**
-     * contains method
-     * 
-     * @param value
-     *            -the value
-     * 
-     * @return boolean -true if contains
-     */
-    public boolean contains(int value) {
-        Node curr = head;
-        while (curr != null) {
-            if (curr.data == value) {
+    public boolean contains(int data) {
+       
+        Node current = head;
+        while (current != null) {
+            if (data == current.data) {
                 return true;
             }
-            curr = curr.next;
+            current = current.nextNode;
         }
+
         return false;
     }
-
+    
 
     /**
      * printList method
      */
-    public void printList() {
+    public void printer() {
         Node currentNode = head;
         while (currentNode != null) {
             System.out.print(currentNode.data + " ");
-            currentNode = currentNode.next;
+            currentNode = currentNode.nextNode;
         }
         System.out.println();
     }
 
 
-    /**
-     * remove method
-     * 
-     * @param value
-     *            -the value
-     */
-    public void remove(int value) {
-        Node curr = head;
-        while (curr != null) {
-            if (curr.data == value) {
-                if (curr.prev == null) {
-                    head = curr.next;
-                    if (head != null) {
-                        head.prev = null;
-                    }
-                }
-                else {
-                    curr.prev.next = curr.next;
-                    if (curr.next != null) {
-                        curr.next.prev = curr.prev;
+    public void remove(int r) {
+       
+            Node curr = head;
+            while (curr != null) {
+                if (curr.data == r) {
+                    if (curr.previousNode == null) {
+                        head = curr.nextNode;
+                        if (head != null) {
+                            head.previousNode = null;
+                        }
                     }
                     else {
-                        tail = curr.prev;
+                        curr = curr.nextNode;
+                        if (curr.nextNode != null) {
+                            curr = curr.previousNode;
+                        }
+                        else {
+                            tail = curr.previousNode;
+                        }
                     }
+                    return;
                 }
-                return;
+                curr = curr.nextNode;
             }
-            curr = curr.next;
         }
-    }
 
 
-    /**
-     * getHead method
-     * 
-     * @return Node -the head
-     */
+
+    
     public Node getHead() {
         return head;
     }
-
 }
