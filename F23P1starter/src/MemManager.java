@@ -1,143 +1,330 @@
-
+/**
+ * Memory Manager class
+ * handles the memory pool and the free lists
+ * 
+ * @author keshr xavier0ne
+ * @version 55.0
+ * 
+ */
 public class MemManager {
-    // Constructor. poolsize defines the size of the memory pool in bytes
+    private int poolSize;
+    private LinkedList[] freeLists;
     private byte[] pool;
-    private DLList<Block> free;
-    private Seminar sem;
-    private int counter;
 
-    public MemManager(int poolsize) {
-        free = new DLList<Block>();
-        pool = new byte[poolsize];
-        free.add(new Block(0, poolsize));
-        counter = 0;
+    /**
+     * Constructor
+     * 
+     * @param poolSize
+     *            -the size of the pool
+     */
+    public MemManager(int poolSize) {
+        this.poolSize = poolSize;
+
+        pool = new byte[poolSize];
+
+        int numLists = (int)Math.round(log2(poolSize));
+
+        freeLists = new LinkedList[numLists + 1];
+
+        for (int i = 0; i < numLists + 1; i++) {
+            freeLists[i] = new LinkedList();
+        }
+
+        freeLists[numLists].add(0);
+
+        // my nodes are only holding the indexes
+        // it should start with the last index of the freelists as 0
+        // as a new request to add a byte[] is should use the buddy system
+        // split up the orginal freelists into smaller ones at different
+        // indexes representing the space that was left
+        // Handles are used to start pos and the space taken in the pool
     }
 
 
-    // Insert a record and return its position handle.
-    // space contains the record to be inserted, of length size.
+    /**
+     *
+     * Calculates the minimum power of two
+     * 
+     * @param size
+     *            -size
+     * @return int -power
+     */
+    private int nextPower(int size) {
+        int n = 0;
+        while ((1 << n) < size) {
+            n++;
+        }
+        return n;
+    }
+
+
+    /**
+     * insert method
+     * 
+     * @param space
+     *            -the byte array
+     * @param size
+     *            -the size of the byte array
+     * @return Handle -the handle
+     */
     public Handle insert(byte[] space, int size) {
-        int temp = bestFit(size);
-        int blockSize = 1;
-        System.arraycopy(space, 0, pool, free.get(temp).getStart(), size);
-        
-        while (blockSize < size) {
-            blockSize *= 2;
+        // find the smallest index at which fit works
+        Handle result = null;
+        while (result == null) {
+            int listIndex = nextPower(size);
+
+            for (int i = listIndex; i < freeLists.length; i++) {
+                if (!freeLists[i].isEmpty()) {
+                    if (i == listIndex) {
+                        int index = freeLists[i].removeFirst();
+                        System.arraycopy(space, 0, pool, index, size);
+                        return new Handle(index, size);
+
+                    }
+                    else // splitting blocks here
+                    {
+                        int index = freeLists[i].removeFirst();
+                        // work down from listIndex, the
+                        for (int j = i; j > listIndex; j--) {
+                            int budLoc = buddyLocation(index, 1 << (j - 1));
+                            freeLists[j - 1].add(budLoc);
+                        }
+                        // does the copied size need to be bump up?
+                        System.arraycopy(space, 0, pool, index, size);
+                        return new Handle(index, size);
+                    }
+
+                }
+            }
+            expandPool();
         }
-        int freeIndex = bestFit(blockSize);
-        
-        while (free.get(freeIndex).getLength()/2 >= blockSize) {
-            Block current = free.get(freeIndex);
-            int halfLength = current.getLength()/2;
-            Block halfBlock = new Block(current.getStart(), halfLength);
-            Block halfBlock2 = new Block(halfLength, current.getEnd());
-            free.remove(current);
-            free.add(freeIndex, halfBlock);
-            free.add(freeIndex+1, halfBlock2);
-            
-        }
-        Handle retHand = new 
-        Handle(free.get(temp).getStart(), free.get(temp).getStart()+size);
-        free.remove(free.get(temp));
-        merge();
-        counter++;
-        
-        return retHand;
+        return result;
     }
 
 
-    // Return the length of the record associated with theHandle
+    /**
+     * 
+     * @param index
+     *            starting index of orginial block
+     * @param size
+     *            length of the block
+     * @return int -buddy location
+     */
+    private int buddyLocation(int index, int size) {
+        int buddyLoc = 0;
+
+        if ((index / size) % 2 == 1) {
+            buddyLoc = index - size;
+        }
+        else {
+            buddyLoc = index + size;
+        }
+
+        return buddyLoc;
+    }
+
+
+    /**
+     * remove method
+     * 
+     * @param theHandle
+     *            -the handle
+     */
+    public void remove(Handle theHandle) {
+        int start = theHandle.getStartPos();
+        int hSize = theHandle.getLength();
+
+        int listIndex = nextPower(hSize);
+        while (listIndex < freeLists.length - 1) {
+            // the if statement can break prematruely on the remove
+            // the case where I removed 3
+            // the buddyIndex is calculated as 3 making it so it doesn't enter
+            // the if statment and then adds the start node making it not work
+            hSize = nextPowerOfTwo(hSize);
+
+            int buddyIndex = buddyLocation(start, hSize);
+
+            if (freeLists[listIndex].contains(buddyIndex)) {
+                // removing and preparing for merge
+                freeLists[listIndex].remove(buddyIndex);
+
+                // find the smaller of the buddies
+                start = Math.min(start, buddyIndex);
+
+                // double size of existing node for merge
+                hSize = hSize * 2;
+
+                // go to next level to check for more buddies
+                listIndex++;
+
+            }
+            else {
+                break;
+            }
+        }
+        freeLists[listIndex].add(start);
+
+    }
+
+
+    /**
+     * length method
+     * 
+     * @param theHandle
+     *            -the handle
+     * @return int -length
+     */
     public int length(Handle theHandle) {
-        
         return theHandle.getLength();
     }
 
 
-    // Free a block at the position specified by theHandle.
-    // Merge adjacent free blocks.
-    public void remove(Handle theHandle) {
-        if (counter == 0) {
-            System.out.println("remove failed");
+    /**
+     * log2 method
+     * 
+     * @param value
+     *            -the value
+     * @return log -the base 2 log
+     */
+    private double log2(int value) {
+        return Math.log(value) / Math.log(2);
+    }
+
+
+    /**
+     * printFreeLists method
+     */
+    public void printFreeLists() {
+        for (int i = 0; i < freeLists.length; i++) {
+            System.out.print("FreeList[" + i + "]: ");
+            freeLists[i].printList();
         }
-        int blockSize = 1;
-        while (blockSize < theHandle.getLength()) {
-            blockSize *= 2;
+    }
+
+
+    /**
+     * expandPool method
+     */
+    public void expandPool() {
+        int newSize = poolSize * 2;
+        byte[] newPool = new byte[newSize];
+
+        for (int i = 0; i < poolSize; i++) {
+            newPool[i] = pool[i];
         }
-        Block remBlock = new Block(theHandle.getStartPos(), blockSize);
-        if (theHandle.getStartPos() == 0){
-            free.add(0, remBlock);
+        this.pool = newPool;
+        int numLists = (int)Math.round(log2(newSize));
+
+        LinkedList[] newFreeLists = new LinkedList[numLists + 1];
+
+        for (int i = 0; i < freeLists.length; i++) {
+            newFreeLists[i] = freeLists[i];
+        }
+        newFreeLists[newFreeLists.length - 1] = new LinkedList();
+
+        if (newFreeLists[newFreeLists.length - 2].contains(0)) {
+            newFreeLists[newFreeLists.length - 2].remove(0);
+            newFreeLists[newFreeLists.length - 1].add(0);
         }
         else {
-            for(int i = 0; i < free.size(); i++) {
-                if (Math.pow(2, i)<= theHandle.getStartPos() && 
-                    theHandle.getStartPos() < Math.pow(2, i+1)) {
-                    free.add(i, remBlock);
-                 }
+            newFreeLists[newFreeLists.length - 2].add(pool.length / 2);
+        }
+
+        this.freeLists = newFreeLists;
+        this.poolSize = newSize;
+
+        System.out.println("Memory pool expanded to " + newSize + " bytes");
+    }
+
+
+    /**
+     * printPool method
+     */
+    public void printPool() {
+        for (int i = 0; i < pool.length; i++) {
+            if (pool[i] == 0) {
+                System.out.print('-');
+            }
+            else {
+                System.out.print("X");
+            }
+
+            if ((i + 1) % 64 == 0) {
+                System.out.println();
             }
         }
-        for (int i = theHandle.getStartPos(); i < theHandle.getEndPos(); i++) {
-            pool[i] = 0;
-        }
-        merge();
-        counter--;
+        System.out.println();
     }
 
 
-    // Return the record with handle posHandle, up to size bytes, by
-    // copying it into space.
-    // Return the number of bytes actually copied into space.
-    public int get(byte[] space, Handle theHandle, int size) {
-        System.arraycopy(pool, theHandle.getStartPos(), space, 0, size);
-        return space.length;
-    }
+    /**
+     * printFreeBlocks method
+     */
+    public void printFreeBlocks() {
+        System.out.println("Freeblock List:");
+        boolean noBlocks = true;
+        for (int i = 0; i < freeLists.length; i++) {
+            // Calculate the size of the block based on its index in freeLists
+            int blockSize = (int)Math.pow(2, i);
 
+            // Only print out lists that are not empty
+            if (!freeLists[i].isEmpty()) {
+                System.out.print(blockSize + ":");
+                noBlocks = false;
 
-    // Dump a printout of the freeblock list
-    public void dump() {
-        System.out.println("Freeblock list: ");
-        for (int i = 0; i < free.size(); i++) {
-            
-            System.out.println(free.get(i).getLength()/(i+1) + ": " + 
-            free.get(i).getLength());
-        }
-    }
-    
-    private void merge() {
-        for (int i = 0; i < free.size()-1; i++) {
-                if((free.get(i).getStart() | free.get(i).getLength()) 
-                    == (free.get(i+1).getStart() | free.get(i+1).getLength())) {
-                    Block addBlock = new Block(free.get(i).getStart(), free.get(i).getEnd());
-                    free.remove(free.get(i));
-                    free.remove(free.get(i+1));
-                    merge();
+                // Use an inner node to traverse the linked list
+                LinkedList.Node currentNode = freeLists[i].getHead();
+                while (currentNode != null) {
+                    System.out.print(" " + currentNode.getData());
+                    currentNode = currentNode.getNext();
                 }
-        }    
-    }
-
-    private int bestFit(int size) {
-        int min = Integer.MAX_VALUE;
-        int index = -1;
-        for (int i = 0; i < free.size(); i++) {
-            // block at index i
-            Block tempBlock = free.get(i);
-            
-            System.out.println("tempblock size: " + tempBlock.getLength());
-            if (tempBlock.getLength() > size && tempBlock.getEnd() < min) {
-                min = tempBlock.getLength();
-                index = tempBlock.getStart();
+                System.out.println();
             }
 
-            if (index == -1) {
-                byte[] newPool = new byte[pool.length*2];
-                System.arraycopy(pool, 0, newPool, 0, pool.length);
-                free.add(new Block(pool.length, newPool.length));
-                pool = newPool;
-                merge();
-            }
-            
         }
-        // if index is -1 then resize
-        System.out.println("this is index " + index);
-        return index;
+        if (noBlocks) {
+            System.out.println("There are no freeblocks in the memory pool");
+        }
     }
+
+
+    /**
+     * getFreeLists method
+     * 
+     * @return int -the free lists
+     */
+    public int getPoolSize() {
+        return poolSize;
+    }
+
+
+    /**
+     * Return the next integer of 2^n
+     * 
+     * @param n
+     *            -input
+     * @return int-the next power of 2
+     */
+    public int nextPowerOfTwo(int n) {
+        if (Integer.highestOneBit(n) == n) {
+            return n;
+        }
+        return Integer.highestOneBit(n) * 2;
+    }
+
+
+    /**
+     * getByte
+     * 
+     * @param theHandle
+     *            -the handle
+     * @return byte[] -the byte array
+     */
+    public byte[] getByte(Handle theHandle) {
+        byte[] space = new byte[theHandle.getLength()];
+        System.arraycopy(pool, theHandle.getStartPos(), space, 0, theHandle
+            .getLength());
+        return space;
+    }
+
 }

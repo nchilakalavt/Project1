@@ -10,33 +10,46 @@ public class MemManagerTest extends TestCase{
         (short)15, (short)33, 125, keywords, "This is a great seminar");
     
     public void testInsert() throws Exception {
-        mem.dump();
+        //mem.dump();
         mem.insert(mysem3.serialize(), mysem3.serialize().length);
-        mem.dump();
-        System.out.println("lengt: " + mysem.serialize().length);
+        //mem.dump();
+        System.out.println("length: " + mysem.serialize().length);
         mem.insert(mysem.serialize(), mysem.serialize().length);
     }
     
-//    public void testRemove() throws Exception {
-//        Handle hand = new Handle(0, mysem3.serialize().length);
+    public void testRemove() throws Exception {
+        Handle hand = new Handle(0, mysem3.serialize().length);
 //        MemManager memEmpty = new MemManager(512);
 //        memEmpty.remove(hand);
-//        
-//        mem.insert(mysem3.serialize(), mysem3.serialize().length);
-//        mem.remove(hand);
-//        mem.dump();
-//        
-//        int length = mysem.serialize().length;
-//        Handle hand2 = new Handle(length, 2*length);
-//        System.out.println(hand2.getEndPos());
-//        mem.insert(mysem.serialize(), length);
-//        mem.remove(hand2);
-//        
-//    }
-//    
-//    public void testGetLength() throws Exception {
-//        Handle hand = new Handle(0, mysem3.serialize().length);
-//        System.out.println(mysem3.serialize().length);
-//        assertEquals(mem.length(hand), hand.getLength());
-//    }
+        
+        mem.insert(mysem3.serialize(), mysem3.serialize().length);
+        mem.insert(mysem.serialize(), mysem.serialize().length);
+        mem.remove(hand);
+        //mem.dump();
+        
+        int length = mysem.serialize().length;
+        Handle hand2 = new Handle(length, 2*length);
+        System.out.println(hand2.getEndPos());
+        mem.remove(hand2);
+        MemManager mem2 = new MemManager(512);
+        mem2.remove(hand);
+    }
+    
+    public void testGetLength() throws Exception {
+        Handle hand = new Handle(0, mysem3.serialize().length);
+        System.out.println(mysem3.serialize().length);
+        assertEquals(mem.length(hand), hand.getLength());
+    }
+    
+    public void testGet() throws Exception {
+        Handle hand = new Handle(0, mysem.serialize().length);
+        assertEquals(mem.getByte(hand), mysem.serialize().length);
+    }
+    
+    public void testDump() throws Exception {
+        Handle hand = new Handle(0, mysem3.serialize().length);
+        MemManager mem2 = new MemManager(512);
+        //mem2.dump(hand);
+        
+    }
 }

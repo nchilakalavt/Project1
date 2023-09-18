@@ -1,8 +1,5 @@
 
 
-
-
-
 /**
  * This provides implementation for some of the LList methods.
  *
@@ -12,25 +9,30 @@
  * @version 10/30/15
  * @author maellis1
  * @version 11/1/15
- * @param <E>
+ * @author Nirish Chilakala (nchilakala)
+ * @version 9/15/23
+ * @param 
  *            The type of object the class will store
  */
-public class DLList<E> {
-
+public class DLList {
+    private int size;
+    private Node head;
+    private Node tail;
     /**
      * This represents a node in a doubly linked list. This node stores data, a
      * pointer to the node before it in the list, and a pointer to the node
      * after it in the list
-     *
-     * @param <E>
      *            This is the type of object that this class will store
      * @author Mark Wiggans (mmw125)
      * @version 4/14/2015
+     * @author Nirish Chilakala (nchilakala)
+     * @version 9/17/23
      */
-    private static class Node<E> {
-        private Node<E> next;
-        private Node<E> previous;
-        private E data;
+    public static class Node {
+        private Node nextNode;
+        private Node previousNode;
+        private int data;
+
 
         /**
          * Creates a new node with the given data
@@ -38,8 +40,10 @@ public class DLList<E> {
          * @param d
          *            the data to put inside the node
          */
-        public Node(E d) {
-            data = d;
+        public Node(int d) {
+            this.data = d;
+            this.nextNode = null;
+            this.previousNode = null;
         }
 
         /**
@@ -48,8 +52,8 @@ public class DLList<E> {
          * @param n
          *            the node after this one
          */
-        public void setNext(Node<E> n) {
-            next = n;
+        public void setNext(Node n) {
+            nextNode = n;
         }
 
         /**
@@ -58,8 +62,8 @@ public class DLList<E> {
          * @param n
          *            the node before this one
          */
-        public void setPrevious(Node<E> n) {
-            previous = n;
+        public void setPrevious(Node n) {
+            previousNode = n;
         }
 
         /**
@@ -67,8 +71,8 @@ public class DLList<E> {
          *
          * @return the next node
          */
-        public Node<E> next() {
-            return next;
+        public Node getNext() {
+            return nextNode;
         }
 
         /**
@@ -76,8 +80,8 @@ public class DLList<E> {
          *
          * @return the node before this one
          */
-        public Node<E> previous() {
-            return previous;
+        public Node getPrevious() {
+            return previousNode;
         }
 
         /**
@@ -85,27 +89,11 @@ public class DLList<E> {
          *
          * @return the data in the node
          */
-        public E getData() {
+        public int getData() {
             return data;
         }
     }
 
-    /**
-     * How many nodes are in the list
-     */
-    private int size;
-
-    /**
-     * The first node in the list. THIS IS A SENTINEL NODE AND AS SUCH DOES NOT
-     * HOLD ANY DATA. REFER TO init()
-     */
-    private Node<E> head;
-
-    /**
-     * The last node in the list. THIS IS A SENTINEL NODE AND AS SUCH DOES NOT
-     * HOLD ANY DATA. REFER TO init()
-     */
-    private Node<E> tail;
 
     /**
      * Create a new DLList object.
@@ -118,13 +106,13 @@ public class DLList<E> {
      * Initializes the object to have the head and tail nodes
      */
     private void init() {
-        head = new DLList.Node<E>(null);
-        tail = new DLList.Node<E>(null);
-        head.setNext(tail);
-        tail.setPrevious(head);
+        head = null;
+        tail = null;
         size = 0;
     }
-
+    public Node getHead() {
+        return head;
+    }
     /**
      * Checks if the array is empty
      *
@@ -139,7 +127,7 @@ public class DLList<E> {
      *
      * @return the number of elements
      */
-    public int size() {
+    public int getSize() {
         return size;
     }
 
@@ -157,7 +145,7 @@ public class DLList<E> {
      *            the object to check for
      * @return true if it contains the object
      */
-    public boolean contains(E obj) {
+    public boolean contains(int obj) {
         return lastIndexOf(obj) != -1;
     }
 
@@ -170,7 +158,7 @@ public class DLList<E> {
      * @throws IndexOutOfBoundsException
      *             if there no node at the given index
      */
-    public E get(int index) {
+    public int get(int index) {
         return getNodeAtIndex(index).getData();
     }
 
@@ -180,8 +168,8 @@ public class DLList<E> {
      * @param newEntry
      *            the element to add to the end
      */
-    public void add(E newEntry) {
-        add(size(), newEntry);
+    public void add(int newEntry) {
+        add(getSize(), newEntry);
     }
 
     /**
@@ -196,16 +184,12 @@ public class DLList<E> {
      * @throws IllegalArgumentException
      *             if obj is null
      */
-    public void add(int index, E obj) {
+    public void add(int index, int obj) {
         if (index < 0 || size < index) {
             throw new IndexOutOfBoundsException();
         }
-        if (obj == null) {
-            throw new IllegalArgumentException("Cannot add null "
-                    + "objects to a list");
-        }
 
-        Node<E> nodeAfter;
+        Node nodeAfter;
         if (index == size) {
             nodeAfter = tail;
         } 
@@ -213,7 +197,7 @@ public class DLList<E> {
             nodeAfter = getNodeAtIndex(index);
         }
 
-        Node<E> addition = new Node<E>(obj);
+        Node addition = new Node(obj);
         addition.setPrevious(nodeAfter.previous());
         addition.setNext(nodeAfter);
         nodeAfter.previous().setNext(addition);
@@ -228,12 +212,12 @@ public class DLList<E> {
      * @param index
      * @return node at index
      */
-    public Node<E> getNodeAtIndex(int index) {
+    public Node getNodeAtIndex(int index) {
         if (index < 0 || size() <= index) {
             throw new IndexOutOfBoundsException("No element exists at " 
                     + index);
         }
-        Node<E> current = head.next(); // as we have a sentinel node
+        Node current = head.next(); // as we have a sentinel node
         for (int i = 0; i < index; i++) {
             current = current.next();
         }
@@ -247,14 +231,14 @@ public class DLList<E> {
      *            the object to look for
      * @return the last position of it. -1 If it is not in the list
      */
-    public int lastIndexOf(E obj) {
+    public int lastIndexOf(int obj) {
         /*
          * We should go from the end of the list as then we an stop once we find
          * the first one
          */
-        Node<E> current = tail.previous();
+        Node current = tail.previous();
         for (int i = size() - 1; i >= 0; i--) {
-            if (current.getData().equals(obj)) {
+            if (current.getData() == obj) {
                 return i;
             }
             current = current.previous();
@@ -271,12 +255,18 @@ public class DLList<E> {
      *             if there is not an element at the index
      * @return true if successful
      */
-    public boolean remove(int index) {
-        Node<E> nodeToBeRemoved = getNodeAtIndex(index);
-        nodeToBeRemoved.previous().setNext(nodeToBeRemoved.next());
-        nodeToBeRemoved.next().setPrevious(nodeToBeRemoved.previous());
-        size--;
-        return true;
+    public int removeFirstNode() {
+        if(!isEmpty()) {
+            int retValue = head.data;
+            head = head.next;
+            if (head == null) {
+                head.previous = null;
+            }
+            else {
+                tail = null;
+            }
+        }
+        throw new IllegalStateException("Empty Lists");
     }
 
     /**
@@ -287,10 +277,10 @@ public class DLList<E> {
      * @return true if the object was found and removed
      */
 
-    public boolean remove(E obj) {
-        Node<E> current = head.next();
+    public boolean remove(int obj) {
+        Node current = head.next();
         while (!current.equals(tail)) {
-            if (current.getData().equals(obj)) {
+            if (current.getData() == obj) {
                 current.previous().setNext(current.next());
                 current.next().setPrevious(current.previous());
                 size--;
@@ -311,10 +301,10 @@ public class DLList<E> {
     public String toString() {
         StringBuilder builder = new StringBuilder("{");
         if (!isEmpty()) {
-            Node<E> currNode = head.next();
+            Node currNode = head.next();
             while (currNode != tail) {
-                E element = currNode.getData();
-                builder.append(element.toString());
+                int element = currNode.getData();
+                builder.append(element);
                 if (currNode.next != tail) {
                     builder.append(", ");
                 }  
@@ -324,6 +314,16 @@ public class DLList<E> {
 
         builder.append("}");
         return builder.toString();
+    }
+    
+
+    public void printList() {
+        Node currentNode = head;
+        while (currentNode != null) {
+            System.out.print(currentNode.data + " ");
+            currentNode = currentNode.next;
+        }
+        System.out.println();
     }
 }
 
