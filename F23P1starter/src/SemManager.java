@@ -39,7 +39,7 @@ public class SemManager {
     public static void main(String[] args) {
         // This is the main file for the program.
 
-        CommandProcessor Reader = new CommandProcessor(args);
+        CommandProcessor Reader = new CommandProcessor(args[0], args[1]);
         Reader.beginParsing(args[2]);
         
     }

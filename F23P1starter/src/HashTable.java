@@ -90,10 +90,6 @@ public class HashTable {
             else if(lister[(homeSlot + hash2) % lister.length].getID() == id) {
                 return lister[(homeSlot + hash2) % lister.length];
             }
-            else {
-                System.out.println("Error searching for Record with id: " + id);
-                return null;
-            }
            
         }
         return null;
@@ -139,20 +135,24 @@ public class HashTable {
      */
     public String toString() {
         String retString = "Hashtable:";
+        int totalRecords = 0;
         for (int i = 0; i < lister.length; i++) {
-            int j = i + 1;
+            int j = i;
             if (lister[i] != null) {
                 if (lister[i].getID() != -1) {
-
+                    totalRecords++;
                     retString += "\n" + j + ": " + lister[i].getID();
                 }
                // else if (lister[i].getID() == -1) {
                 else {
+                    totalRecords++;
                     retString += "\n" + j + ": TOMBSTONE";
                 }
             }
+            
         }
-        return retString;
+        
+        return retString + "\ntotal records: " + totalRecords;
     }
 
 }

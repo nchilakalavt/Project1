@@ -50,11 +50,11 @@ public class MemManager {
      * @return int -power
      */
     private int nextPower(int size) {
-        int  blockSize = 1;
-        while (blockSize < size) {
-            blockSize *= 2;
+        int n = 0;
+        while ((1 << n) < size) {
+            n++;
         }
-        return blockSize;
+        return n;
     }
 
 
@@ -186,8 +186,8 @@ public class MemManager {
      *            -the value
      * @return log -the base 2 log
      */
-    private int log2(int value) {
-        return (int)Math.log(value) / Math.log(2);
+    private double log2(int value) {
+        return Math.log(value) / Math.log(2);
     }
 
 
@@ -260,7 +260,7 @@ public class MemManager {
     /**
      * printFreeBlocks method
      */
-    public void printFreeBlocks() {
+    public void dump() {
         System.out.println("Freeblock List:");
         boolean noBlocks = true;
         for (int i = 0; i < freeLists.length; i++) {

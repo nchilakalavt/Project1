@@ -8,30 +8,38 @@ public class SemDatabase {
         
     }
     public void delete(int key) {
-        Record r = hash.search(key);
-        hash.delete(key);
-        m.remove(r.getHandle());
+        if(hash.search(key)==null) {
+            hash.delete(key);
+            m.remove(hash.search(key).getHandle());
+            System.out.println("Record with ID " + key + 
+                " successfully deleted from the database");
+        }
+        else {
+            System.out.println("Delete FAILED - "
+                + "There is no record with ID " + key);
+        }
     }
     public void insert(Seminar s) throws Exception {
         if(hash.search(s.getID())==null) {
             Handle h = m.insert(s.serialize(), s.serialize().length);
             hash.hashInsert(new Record(h, s.getID()));
+            System.out.println("Successfully inserted record with ID " + s.getID());
+            System.out.println(s.toString());
         }
         else {
-            System.out.println("Insert Failed");
+            System.out.println("Insert FAILED - "
+                + "There is already a record with ID " + s.getID());
         }
         //first check in the hash table 
 
     }
-    public void searcher(int ID) {
-//        Handle h = new Handle(3, 20);// 3 , 20 r dummy values
-//        Record r = new Record(h, ID);
-        Record r = hash.search(ID);
-        if (r != null) {
-            byte[] arr = new byte[r.getHandle().getLength()];
-            m.get(arr, r.getHandle(), ID);
+    public void search(int ID) {
+        //Record r = hash.search(ID);
+        if (hash.search(ID) != null) {
+            Record r = hash.search(ID);
             try {
-                Seminar s = Seminar.deserialize(arr);
+                Seminar s = Seminar.deserialize(m.getByte(r.getHandle()));
+                System.out.println("Found Record with ID " + ID + ":");
                 System.out.println(s.toString());
             }
             catch (Exception e) {
@@ -41,15 +49,16 @@ public class SemDatabase {
             
         }
         else {
-            System.out.println("search failed");
+            System.out.println("Search FAILED -- there is no record with ID " + ID);
         }
         
     }
     public void printHash() {
         System.out.println(hash.toString());
     }
-    public void printBlock() {
+    public void printFreeBlock() {
         m.dump();
     }
+    
     
 }

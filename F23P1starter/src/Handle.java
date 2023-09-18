@@ -26,7 +26,7 @@ public class Handle {
     }
     
     public int getLength() {
-        return endPos - startPos;
+        return Math.abs(endPos - startPos);
     }
 
     
