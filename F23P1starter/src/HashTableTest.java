@@ -2,7 +2,7 @@
 import student.TestCase;
 
 public class HashTableTest extends TestCase {
-    private String[] keywords = { "Good", "Bad", "Ugly" };
+   // private String[] keywords = { "Good", "Bad", "Ugly" };
     /*
      * private Seminar mysem = new Seminar(1729, "Seminar Title", "2405231000",
      * 1,

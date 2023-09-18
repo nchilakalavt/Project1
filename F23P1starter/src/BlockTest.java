@@ -8,7 +8,7 @@ public class BlockTest extends TestCase {
     /**
      * Test method for testing the getter and setter methods of the Block Class
      */
-    public void testGet() {
+    public void testGettersAndSetters() {
         b2 = new Block(10, 20);
         b = new Block(12, 24);
         b3 = new Block(10, 5);

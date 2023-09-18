@@ -1,11 +1,11 @@
 import student.TestCase;
 
 public class RecordTest extends TestCase {
+    
+    Handle han = new Handle(20, 20);
     /**
      * Test method for testing the record class
      */
-    Handle han = new Handle(20, 20);
-
     public void testRecord() {
         Record r = new Record(han, 10);
         assertEquals(r.getHandle(), han);

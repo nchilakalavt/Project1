@@ -135,8 +135,11 @@ public class Seminar implements Serializable {
             ", Length: " + length + ", X: " + x + ", Y: " + y + ", Cost: " +
             cost + "\nDescription: " + desc + "\nKeywords: " + mykeys;
     }
-    //implement getID
-
+   
+    /**
+     * getter method for the id/key value
+     * @return int id 
+     */
     public int getID() {
         // TODO Auto-generated method stub
         return this.id;
