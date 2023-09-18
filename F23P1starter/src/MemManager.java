@@ -62,9 +62,9 @@ public class MemManager {
      * insert method
      * 
      * @param space
-     *            -the byte array
+     *            -serialized byte array
      * @param size
-     *            -the size of the byte array
+     *            -size of the byte array
      * @return Handle -the handle
      */
     public Handle insert(byte[] space, int size) {
@@ -86,7 +86,7 @@ public class MemManager {
                         int index = freeLists[i].removeFirst();
                         // work down from listIndex, the
                         for (int j = i; j > listIndex; j--) {
-                            int budLoc = buddyLocation(index, 1 << (j - 1));
+                            int budLoc = mergeIndex(index, 1 << (j - 1));
                             freeLists[j - 1].add(budLoc);
                         }
                         // does the copied size need to be bump up?
@@ -110,7 +110,7 @@ public class MemManager {
      *            length of the block
      * @return int -buddy location
      */
-    private int buddyLocation(int index, int size) {
+    private int mergeIndex(int index, int size) {
         int buddyLoc = 0;
 
         if ((index / size) % 2 == 1) {
@@ -140,9 +140,9 @@ public class MemManager {
             // the case where I removed 3
             // the buddyIndex is calculated as 3 making it so it doesn't enter
             // the if statment and then adds the start node making it not work
-            hSize = nextPowerOfTwo(hSize);
+            hSize = (int)(Math.pow(hSize, 2));
 
-            int buddyIndex = buddyLocation(start, hSize);
+            int buddyIndex = mergeIndex(start, hSize);
 
             if (freeLists[listIndex].contains(buddyIndex)) {
                 // removing and preparing for merge
@@ -191,16 +191,6 @@ public class MemManager {
     }
 
 
-    /**
-     * printFreeLists method
-     */
-    public void printFreeLists() {
-        for (int i = 0; i < freeLists.length; i++) {
-            System.out.print("FreeList[" + i + "]: ");
-            freeLists[i].printList();
-        }
-    }
-
 
     /**
      * expandPool method
@@ -213,7 +203,7 @@ public class MemManager {
             newPool[i] = pool[i];
         }
         this.pool = newPool;
-        int numLists = (int)Math.round(log2(newSize));
+        int numLists = (int)(Math.log(newSize)/Math.log(2));
 
         LinkedList[] newFreeLists = new LinkedList[numLists + 1];
 
@@ -304,13 +294,13 @@ public class MemManager {
      * @param n
      *            -input
      * @return int-the next power of 2
-     */
+     *
     public int nextPowerOfTwo(int n) {
         if (Integer.highestOneBit(n) == n) {
             return n;
         }
         return Integer.highestOneBit(n) * 2;
-    }
+    }*/
 
 
     /**
@@ -320,11 +310,15 @@ public class MemManager {
      *            -the handle
      * @return byte[] -the byte array
      */
-    public byte[] getByte(Handle theHandle) {
+    public byte[] get(Handle theHandle) {
         byte[] space = new byte[theHandle.getLength()];
         System.arraycopy(pool, theHandle.getStartPos(), space, 0, theHandle
             .getLength());
         return space;
+    }
+    
+    public byte[] getPool(){
+        return this.pool;
     }
 
 }

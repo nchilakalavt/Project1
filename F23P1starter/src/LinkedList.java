@@ -8,7 +8,7 @@ public class LinkedList {
     /**
      * Node for linkedlist
      * 
-     * @author nchilakala
+     * @author keshr
      * @version 1
      */
     public class Node {

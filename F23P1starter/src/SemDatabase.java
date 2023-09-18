@@ -38,7 +38,7 @@ public class SemDatabase {
         if (hash.search(ID) != null) {
             Record r = hash.search(ID);
             try {
-                Seminar s = Seminar.deserialize(m.getByte(r.getHandle()));
+                Seminar s = Seminar.deserialize(m.get(r.getHandle()));
                 System.out.println("Found Record with ID " + ID + ":");
                 System.out.println(s.toString());
             }

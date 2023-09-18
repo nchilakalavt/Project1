@@ -60,7 +60,7 @@ public class HashTableTest extends TestCase {
         assertEquals(h2.search(1739), null);
         assertEquals(h.search(189), null);
 
-        HashTable h10 = new HashTable(10);
+        HashTable h10 = new HashTable(8);
         h10.hashInsert(r);
         Record r2 = new Record(han, 1739);
         h10.hashInsert(r2);
@@ -70,17 +70,38 @@ public class HashTableTest extends TestCase {
         h10.hashInsert(roddBall);
         assertEquals(h10.search(1639), roddBall);
 
-        HashTable h11 = new HashTable(10);
+        HashTable h11 = new HashTable(4);
         h11.hashInsert(r);
         Handle hon = new Handle(3, 23);
         Record r4 = new Record(han, 1739);
         h11.hashInsert(r4);
         Record r5 = new Record(hon, 1639);
         h11.hashInsert(r5);
-        assertEquals(h11.search(1639), null);
+        assertEquals(h11.search(1639), r5);
+        //assertEquals(h11.search());
 
         HashTable h69 = new HashTable(4);
         assertEquals(h69.search(420), null);
+        
+        
+    }
+    
+    public void testInsert2() {
+        HashTable h8 = new HashTable(8);
+        Handle hand1 = new Handle(3, 23);
+        Handle hand2 = new Handle(3, 23);
+        Handle hand3 = new Handle(3, 23);
+        Handle hand10 = new Handle(3, 23);
+        Record r1 = new Record(hand1, 1);
+        Record r2 = new Record(hand2, 2);
+        Record r3 = new Record(hand3, 3);
+        Record r10 = new Record(hand10, 10);
+        h8.hashInsert(r1);
+        h8.hashInsert(r2);
+        h8.hashInsert(r3);
+        h8.hashInsert(r10);
+        assertEquals(h8.search(2), r2);
+        assertEquals(h8.delete(2), "Record with ID 2 has been deleted");
     }
 
 /**

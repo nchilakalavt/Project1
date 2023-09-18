@@ -81,7 +81,7 @@ public class HashTable {
             
         }
         
-        while(lister[homeSlot] != tombstone) {
+        while(lister[homeSlot] != null) {
             int hash2 = (((id / lister.length ) % (lister.length / 2)) * 2) + 1;
             
             if(lister[(homeSlot + hash2) % lister.length] == null) {
@@ -90,7 +90,10 @@ public class HashTable {
             else if(lister[(homeSlot + hash2) % lister.length].getID() == id) {
                 return lister[(homeSlot + hash2) % lister.length];
             }
-           
+            else {
+                System.out.println("Error Searching");
+                return null;
+            }
         }
         return null;
         
