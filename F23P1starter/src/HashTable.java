@@ -102,14 +102,14 @@ public class HashTable {
     
     /**
      * Delete method for hash table
-     * @param r:  Record to be deleted
+     * @param Id value to be updated
      * @return the record that matches the given ID
      */
     public String delete(int id) {
         if (counter ==0) {
            return "Hash Table is empty"; 
         }
-        //int id = r.getID();
+        //int id = key.getID();
         tombstone = this.search(id);
         int homeSlot = id % lister.length;
         if (tombstone != null) {
@@ -130,20 +130,29 @@ public class HashTable {
         }*/
         
     }
+    
+
+    /**
+     * Tostring is a function to print out the contents of the hashtable
+     * 
+     * @return String that represents the function
+     */
     public String toString() {
         String retString = "Hashtable:";
-        for (int i = 0; i <lister.length; i++) {
-            int j = i+1;
-            if (lister[i] != null && lister[i].getID() != -1) {
-                
-                retString += "\n" + j + ": " + lister[i].getID();
-            }
-            else if(lister[i] != null && lister[i].getID() == -1) {
-                retString+= "\n" + j + ": TOMBSTONE";
+        for (int i = 0; i < lister.length; i++) {
+            int j = i + 1;
+            if (lister[i] != null) {
+                if (lister[i].getID() != -1) {
+
+                    retString += "\n" + j + ": " + lister[i].getID();
+                }
+               // else if (lister[i].getID() == -1) {
+                else {
+                    retString += "\n" + j + ": TOMBSTONE";
+                }
             }
         }
         return retString;
     }
-
 
 }

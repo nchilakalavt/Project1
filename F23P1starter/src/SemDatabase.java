@@ -1,4 +1,3 @@
-
 public class SemDatabase {
     private HashTable hash;
     private MemManager m;
@@ -21,6 +20,7 @@ public class SemDatabase {
         else {
             System.out.println("Insert Failed");
         }
+        //first check in the hash table 
 
     }
     public void searcher(int ID) {
