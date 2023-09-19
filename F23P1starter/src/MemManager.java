@@ -1,3 +1,4 @@
+
 /**
  * Memory Manager class
  * handles the memory pool and the free lists
@@ -40,7 +41,12 @@ public class MemManager {
     }
 
 
-
+/**
+ * 
+ * @param space
+ * @param size
+ * @return
+ */
     public Handle insert(byte[] space, int size) {
         // find the smallest index at which fit works
         Handle result = null;
@@ -76,7 +82,12 @@ public class MemManager {
     }
 
 
-
+/**
+ * Method to merge index
+ * @param startIndex starting index to merge 
+ * @param size the size of the pool
+ * @return
+ */
     private int mergeIndex(int startIndex, int size) {
         int buddyIndex = 0;
 

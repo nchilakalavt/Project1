@@ -29,7 +29,7 @@ public class Record {
     }
     /**
      * getter method `
-     * @return
+     * @return H handle object to be used 
      */
     public Handle getHandle() {
         return H;

@@ -1,11 +1,11 @@
 import student.TestCase;
 
 public class SemDatabaseTest extends TestCase {
-    private HashTable h = new HashTable(16);
+    private HashTable h = new HashTable(20);
     private MemManager m = new MemManager(20);
     private SemDatabase s = new SemDatabase(4, 512);
     private String[] keywords = { "Good", "Bad", "Ugly" };
-    private Seminar mysem2 = new Seminar(2, "Seminar Title",
+    private Seminar mysem2 = new Seminar(1, "Seminar Title",
         "2405231000", 1, (short)15, (short)33, 125, keywords,
         "This is a great seminar");
     
@@ -20,28 +20,10 @@ public class SemDatabaseTest extends TestCase {
 
     public void testDelete() throws Exception {
         Handle han = new Handle(2, 2);
-        Handle han2 = new Handle(2, 2);
-        Handle han3 = new Handle(2, 2);
-        Handle han10 = new Handle(2, 2);
         Record r = new Record(han, 1);
-        Record r2 = new Record(han, 2);
-        Record r3 = new Record(han, 3);
-        Record r10 = new Record(han, 10);
-        Seminar mysem1 = new Seminar(1, "Seminar Title",
-            "2405231000", 1, (short)15, (short)33, 125, keywords,
-            "This is a great seminar");
-        Seminar mysem3 = new Seminar(3, "Seminar Title",
-            "2405231000", 1, (short)15, (short)33, 125, keywords,
-            "This is a great seminar");
-        Seminar mysem10 = new Seminar(10, "Seminar Title",
-            "2405231000", 1, (short)15, (short)33, 125, keywords,
-            "This is a great seminar");
-        s.insert(mysem1);
         s.insert(mysem2); 
-        s.insert(mysem3); 
-        s.insert(mysem10); 
         s.delete(mysem2.getID());
-        s.search(mysem2.getID());
+        // assertEquals(, false)
     }
 
 

@@ -98,11 +98,11 @@ public class LinkedList {
     }
 
 
-    public boolean contains(int data) {
+    public boolean contains(int hasIt) {
        
         Node current = head;
         while (current != null) {
-            if (data == current.data) {
+            if (hasIt == current.data) {
                 return true;
             }
             current = current.nextNode;

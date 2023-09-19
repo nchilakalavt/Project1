@@ -8,9 +8,11 @@ public class SemDatabase {
         
     }
     public void delete(int key) {
-        if(hash.search(key)!= null) {
+        if(hash.search(key)!=null) {
+            Handle h = hash.search(key).getHandle();
             hash.delete(key);
-            m.remove(hash.search(key).getHandle());
+           
+            m.remove(h);
             System.out.println("Record with ID " + key + 
                 " successfully deleted from the database");
         }
@@ -25,6 +27,8 @@ public class SemDatabase {
             hash.hashInsert(new Record(h, s.getID()));
             System.out.println("Successfully inserted record with ID " + s.getID());
             System.out.println(s.toString());
+            int length = s.serialize().length;
+            System.out.println("Size: " + length);
         }
         else {
             System.out.println("Insert FAILED - "
@@ -33,13 +37,19 @@ public class SemDatabase {
         //first check in the hash table 
 
     }
-    public void search(int ID) throws Exception {
+    public void search(int ID) {
         //Record r = hash.search(ID);
         if (hash.search(ID) != null) {
             Record r = hash.search(ID);
-            Seminar s = Seminar.deserialize(m.get(r.getHandle()));
-            System.out.println("Found Record with ID " + ID + ":");
-            System.out.println(s.toString());
+            try {
+                Seminar s = Seminar.deserialize(m.get(r.getHandle()));
+                System.out.println("Found record with ID " + ID + ":");
+                System.out.println(s.toString());
+            }
+            catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
             
         }
         else {
