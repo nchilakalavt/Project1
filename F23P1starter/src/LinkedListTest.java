@@ -23,7 +23,7 @@ public class LinkedListTest extends TestCase {
         r.add(5);
         assertFalse(r.contains(4));
         assertTrue(r.contains(5));
-        assertEquals(r.removeFirstNode(), 3);
+        assertEquals(r.removeFirst(), 3);
     }
 
 /**

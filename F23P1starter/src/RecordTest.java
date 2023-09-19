@@ -1,9 +1,8 @@
 import student.TestCase;
 
 public class RecordTest extends TestCase {
-
+    
     Handle han = new Handle(20, 20);
-
     /**
      * Test method for testing the record class
      */
@@ -14,8 +13,6 @@ public class RecordTest extends TestCase {
         r.setID(12);
         assertEquals(12, r.getID());
     }
-
-
     /*
      * Test method for Handle Class, which record takes in
      */

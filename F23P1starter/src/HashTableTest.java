@@ -2,7 +2,7 @@
 import student.TestCase;
 
 public class HashTableTest extends TestCase {
-    // private String[] keywords = { "Good", "Bad", "Ugly" };
+   // private String[] keywords = { "Good", "Bad", "Ugly" };
     /*
      * private Seminar mysem = new Seminar(1729, "Seminar Title", "2405231000",
      * 1,
@@ -20,10 +20,9 @@ public class HashTableTest extends TestCase {
     private Record r2 = new Record(han2, 1739); // id = 1739
     private HashTable h = new HashTable(2);
     private HashTable h2 = new HashTable(1);
-
-    /**
-     * tester method for insert in the hashtable
-     */
+/**
+ * tester method for insert in the hashtable
+ */
     public void testInsert() {
         /*
          * Seminar tester = new Seminar(1, "Seminar Title", "2405231000", 1,
@@ -46,12 +45,11 @@ public class HashTableTest extends TestCase {
         Handle sameAs = new Handle(3, 20);
         Record sameIdTesterRec = new Record(sameAs, 1);
         h69.hashInsert(sameIdTesterRec);
-    }
+        h2.hashInsert(sameIdTesterRec); }
 
-
-    /**
-     * tester method for search
-     */
+/**
+ * tester method for search
+ */
     public void testSearch() {
         assertEquals(h.search(1739), null);
         h.hashInsert(r2);
@@ -85,10 +83,9 @@ public class HashTableTest extends TestCase {
         assertEquals(h69.search(420), null);
     }
 
-
-    /**
-     * Tester method for getSize
-     */
+/**
+ * Tester method for getSize
+ */
     public void testGetSize() {
         assertEquals(h2.getSize(), 1);
         h2.hashInsert(r);
@@ -97,37 +94,39 @@ public class HashTableTest extends TestCase {
         assertEquals(h2.getSize(), 4);
     }
 
-
-    /**
-     * tester method for delete
-     */
+/**
+ * tester method for delete
+ */
     public void testDelete() {
-
+        
         HashTable h3 = new HashTable(4);
         assertEquals(h3.delete(20), "Hash Table is empty");
         h3.hashInsert(r);
+        assertEquals(h3.delete(20), "Record with ID 20 not found.");
+        Handle dummy1 = new Handle(2, 2);
+        Record dumDum = new Record(dummy1 , 2);
+        h3.hashInsert(dumDum);
+        assertEquals(h3.delete(2), "Record with ID 2 has been deleted");
         assertEquals(h3.delete(1729), "Record with ID 1729 has been deleted");
         assertEquals(h3.search(1729), null);
-        h3.hashInsert(r2);
-        // assertEquals(h3.delete(1739), "Record with ID 1739 not found.");
+        //h3.hashInsert(r);
+       // assertEquals(h3.delete(1739), "Record with ID 1739 not found.");
 
-        // assertEquals(h5.delete(1729), "Hash Table is empty");
+       //assertEquals(h5.delete(1729), "Hash Table is empty");
     }
-
-
-    public void testToString() {
-        String expected = h.toString();
-        assertEquals(expected, h.toString());
-        h.hashInsert(r);
-        Record oneId = new Record(han, 1);
-        h.hashInsert(oneId);
-        String expected2 = h.toString();
-        assertEquals(expected2, h.toString());
-        h.delete(1729);
-        String expected3 = h.toString();
-        assertEquals(expected3, h.toString());
-        h.delete(1);
-        String expected4 = h.toString();
-        assertEquals(expected4, h.toString());
-    }
+       public void testToString() {
+           String expected = h.toString();
+           assertEquals(expected, h.toString());
+           h.hashInsert(r);
+           Record oneId = new Record(han, 1);
+           h.hashInsert(oneId);
+           String expected2 = h.toString();
+           assertEquals(expected2, h.toString());
+           h.delete(1729);
+           String expected3 = h.toString();
+           assertEquals(expected3, h.toString());
+           h.delete(1);
+           String expected4 = h.toString();
+           assertEquals(expected4, h.toString());
+       }
 }

@@ -17,9 +17,11 @@ public class SemManagerTest extends TestCase {
     /**
      * Get code coverage of the class declaration.
      */
-    public void testMInitx() {
+    public void testMInitx()
+    {
         SemManager sem = new SemManager();
         assertNotNull(sem);
-        // SemManager.main(null);
+        //SemManager.main(null);
     }
 }
+

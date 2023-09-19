@@ -1,52 +1,41 @@
 public class Record {
     public int id;
-    public Handle H;
-
+   public Handle H;
+ 
     /**
      * constructor
-     * 
-     * @param h
-     *            handle object
-     * @param ID
-     *            key value
+     * @param h handle object
+     * @param ID key value
      */
-    public Record(Handle h, int ID) {
-
-        id = ID;
-        H = h;
+    public Record(Handle h,int ID) {
+     
+          id = ID;
+          H = h;
     }
-
-
-    /**
-     * get method for id
-     * 
-     * @return id/key value
-     */
+/**
+ * get method for id
+ * @return id/key value
+ */
     public int getID() {
         return this.id;
     }
-
-
-    /**
-     * setter method to set a new key value to a record
-     * 
-     * @param idToSet
-     *            new key value to set the record
-     */
+    
+  /**
+   * setter method to set a new key value to a record
+   * @param idToSet new key value to set the record
+   */
     public void setID(int idToSet) {
         id = idToSet;
     }
-
-
     /**
      * getter method `
-     * 
-     * @return H handle object to be used
+     * @return H handle object to be used 
      */
     public Handle getHandle() {
         return H;
     }
-    // getSeminar
-    // getiD
+    //getSeminar
+    //getiD 
+   
 
 }
