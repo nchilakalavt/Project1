@@ -11,7 +11,6 @@ public class LinkedListTest extends TestCase {
 
 
     public void testLinkedList() {
-        exc
         assertTrue(r.contains(3));
         r.add(5);
         assertFalse(r.contains(4));
