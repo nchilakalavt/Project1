@@ -1,7 +1,7 @@
 public class SemDatabase {
     private HashTable hash;
     private MemManager m;
-
+    
     public SemDatabase(int hashTableSize, int poolSize) {
         hash = new HashTable(hashTableSize);
         m = new MemManager(poolSize);

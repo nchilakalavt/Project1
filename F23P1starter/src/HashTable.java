@@ -19,7 +19,7 @@ public class HashTable {
      */
     public HashTable(int size) {
         lister = new Record[size];
-        
+
     }
 
 
@@ -48,7 +48,7 @@ public class HashTable {
         int id = r.getID();
         // ((k/M ) mod (M/2)) ∗ 2) + 1
         homeSlot = id % lister.length;
-        if (lister[homeSlot] == null || lister[homeSlot].getID() == -1 ) {
+        if (lister[homeSlot] == null || lister[homeSlot].getID() == -1) {
             lister[homeSlot] = r;
         }
         else {
@@ -134,24 +134,25 @@ public class HashTable {
             return "Hash Table is empty";
         }
         // int id = key.getID();
-        if(this.search(id) == null) {
+        if (this.search(id) == null) {
             return "Record with ID " + id + " not found.";
         }
         Record deleter = this.search(id);
-        
+
         int homeSlot = id % lister.length;
-           if(lister[homeSlot].getID() == id) {
-              lister[homeSlot].setID(-1);;
-              counter --;
-               return "Record with ID " + id + " has been deleted";
-               
-           }
+        if (lister[homeSlot].getID() == id) {
+            lister[homeSlot].setID(-1);
+            ;
+            counter--;
+            return "Record with ID " + id + " has been deleted";
+
+        }
         while (lister[homeSlot] != null) {
             int hash2 = (((id / lister.length) % (lister.length / 2)) * 2) + 1;
 
-           //if (lister[(homeSlot + hash2) % lister.length] == null) {
-           //     return "Record with ID " + id + " not found.";
-           // }
+            // if (lister[(homeSlot + hash2) % lister.length] == null) {
+            // return "Record with ID " + id + " not found.";
+            // }
             if (lister[(homeSlot + hash2) % lister.length].getID() == id) {
                 lister[(homeSlot + hash2) % lister.length].setID(-1);
                 return "Record with ID " + id + " has been deleted";
@@ -159,16 +160,17 @@ public class HashTable {
             homeSlot = (homeSlot + hash2) % lister.length;
 
         }
-       
-        /**if (deleter != null) {
-            deleter.setID(-1);
-            lister[homeSlot] = deleter;
-            return "Record with ID " + id + " has been deleted";
-        }
-        else {
-            return "Record with ID " + id + " not found.";
-        }
-        /*
+
+        /**
+         * if (deleter != null) {
+         * deleter.setID(-1);
+         * lister[homeSlot] = deleter;
+         * return "Record with ID " + id + " has been deleted";
+         * }
+         * else {
+         * return "Record with ID " + id + " not found.";
+         * }
+         * /*
          * while(lister[homeSlot] != tombstone) {
          * int hash2 = (((id / lister.length ) % (lister.length / 2)) * 2) + 1;
          * if(lister[(homeSlot + hash2) % lister.length].getID() == id) {
@@ -191,7 +193,7 @@ public class HashTable {
     public String toString() {
         String retString = "Hashtable:";
         for (int i = 0; i < lister.length; i++) {
-            
+
             if (lister[i] != null) {
                 if (lister[i].getID() != -1) {
 
@@ -202,7 +204,7 @@ public class HashTable {
                     retString += "\n" + i + ": TOMBSTONE";
                 }
             }
-            
+
         }
         retString += "\n" + "total records: " + counter;
         return retString;

@@ -1,54 +1,52 @@
- /**
-     * Node for linkedlist
-     * 
-     * @author nchilakala
-     * @version 1
-     */
+/**
+ * Node for linkedlist
+ * 
+ * @author nchilakala
+ * @version 1
+ */
 public class LinkedList {
-   
+
     public class Node {
         private Node previousNode;
         private Node nextNode;
         private int data;
 
-        
         public Node(int info) {
             this.data = info;
             this.nextNode = null;
             this.previousNode = null;
         }
 
-       
+
         public Node getNextNode() {
             return nextNode;
         }
-        
+
 
         /**
          * get Node prev
+         * 
          * @return Node prev
          */
         public Node getPreviousNode() {
             return previousNode;
         }
 
-         /**
+
+        /**
          * int data for node
+         * 
          * @return int data
          */
         public int getData() {
             return data;
         }
 
-
-
-
     }
 
     private Node head;
     private Node tail;
 
-    
     public LinkedList() {
         this.head = null;
         this.tail = null;
@@ -83,7 +81,7 @@ public class LinkedList {
         head = head.nextNode;
         if (head == null) {
             tail = null;
-           
+
         }
         else {
             head.previousNode = null;
@@ -92,14 +90,13 @@ public class LinkedList {
     }
 
 
-   
     public boolean isEmpty() {
         return head == null;
     }
 
 
     public boolean contains(int hasIt) {
-       
+
         Node current = head;
         while (current != null) {
             if (hasIt == current.data) {
@@ -110,7 +107,7 @@ public class LinkedList {
 
         return false;
     }
-    
+
 
     /**
      * printList method
@@ -126,34 +123,32 @@ public class LinkedList {
 
 
     public void remove(int r) {
-       
-            Node curr = head;
-            while (curr != null) {
-                if (curr.data == r) {
-                    if (curr.previousNode == null) {
-                        head = curr.nextNode;
-                        if (head != null) {
-                            head.previousNode = null;
-                        }
+
+        Node curr = head;
+        while (curr != null) {
+            if (curr.data == r) {
+                if (curr.previousNode == null) {
+                    head = curr.nextNode;
+                    if (head != null) {
+                        head.previousNode = null;
+                    }
+                }
+                else {
+                    curr = curr.nextNode;
+                    if (curr.nextNode != null) {
+                        curr = curr.previousNode;
                     }
                     else {
-                        curr = curr.nextNode;
-                        if (curr.nextNode != null) {
-                            curr = curr.previousNode;
-                        }
-                        else {
-                            tail = curr.previousNode;
-                        }
+                        tail = curr.previousNode;
                     }
-                    return;
                 }
-                curr = curr.nextNode;
+                return;
             }
+            curr = curr.nextNode;
         }
+    }
 
 
-
-    
     public Node getHead() {
         return head;
     }

@@ -12,13 +12,20 @@ public class MemManager {
     private LinkedList[] freeListArr;
     private byte[] pool;
 
-
+    /**
+     * MemManager constructor
+     * 
+     * @param poolSize:
+     *            size of the memory pool
+     *
+     */
     public MemManager(int poolSize) {
         this.poolSize = poolSize;
 
         pool = new byte[poolSize];
 
-        int numLists = (int)(Math.log(poolSize) / Math.log(2));;
+        int numLists = (int)(Math.log(poolSize) / Math.log(2));
+        ;
 
         freeListArr = new LinkedList[numLists + 1];
 
@@ -31,24 +38,34 @@ public class MemManager {
     }
 
 
-
-    private int minPowerTwo(int size) {
+    /**
+     * Finds the minimum power of 2 that is bigger than the size
+     * 
+     * @param size:
+     *            size of the block that we want to hold
+     * @return int: minimum size that the block can be so that it can fit the
+     *         size parameter
+     */
+    public int minPowerTwo(int size) {
         int blockSize = 0;
-        while ((1 << blockSize) <= size) {
+        while ((1 << blockSize) < size) {
             blockSize++;
         }
         return blockSize;
     }
 
 
-/**
- * 
- * @param space
- * @param size
- * @return
- */
+    /**
+     * Insert method that adds to the memory pool and removes from the free
+     * block list
+     * 
+     * @param space:
+     *            serialized byte array that holds the seminar object
+     * @param size:
+     *            size of the seminar object
+     * @return the position handle
+     */
     public Handle insert(byte[] space, int size) {
-        // find the smallest index at which fit works
         Handle result = null;
         while (result == null) {
             int listIndex = minPowerTwo(size);
@@ -61,15 +78,14 @@ public class MemManager {
                         return new Handle(index, size);
 
                     }
-                    else // splitting blocks here
-                    {
+                    else {
                         int index = freeListArr[i].removeFirst();
-                        // work down from listIndex, the
+
                         for (int j = i; j > listIndex; j--) {
                             int budLoc = mergeIndex(index, 1 << (j - 1));
                             freeListArr[j - 1].add(budLoc);
                         }
-                        // does the copied size need to be bump up?
+
                         System.arraycopy(space, 0, pool, index, size);
                         return new Handle(index, size);
                     }
@@ -82,12 +98,15 @@ public class MemManager {
     }
 
 
-/**
- * Method to merge index
- * @param startIndex starting index to merge 
- * @param size the size of the pool
- * @return
- */
+    /**
+     * Method to merge index
+     * 
+     * @param startIndex
+     *            starting index to merge
+     * @param size
+     *            the size of the pool
+     * @return
+     */
     private int mergeIndex(int startIndex, int size) {
         int buddyIndex = 0;
 
@@ -102,7 +121,12 @@ public class MemManager {
     }
 
 
-
+    /**
+     * Removes handle from memory pool and adds to free block list
+     * 
+     * @param theHandle:
+     *            Handle that holds position to be removed
+     */
     public void remove(Handle theHandle) {
         int startPos = theHandle.getStartPos();
         int handleSize = theHandle.getLength();
@@ -115,18 +139,10 @@ public class MemManager {
             int buddyIndex = mergeIndex(startPos, handleSize);
 
             if (freeListArr[listIndex].contains(buddyIndex)) {
-                // removing and preparing for merge
                 freeListArr[listIndex].remove(buddyIndex);
-
-                // find the smaller of the buddies
                 startPos = Math.min(startPos, buddyIndex);
-
-                // double size of existing node for merge
                 handleSize *= 2;
-
-                // go to next level to check for more buddies
                 listIndex++;
-
             }
             else {
                 break;
@@ -138,12 +154,21 @@ public class MemManager {
     }
 
 
-
+    /**
+     * Returns length of the handle
+     * 
+     * @param theHandle:
+     *            Handle whose length we are looking for
+     * @return int: the length of the handle
+     */
     public int length(Handle theHandle) {
         return theHandle.getLength();
     }
 
 
+    /**
+     * Increases the size of the memory pool
+     */
     public void expandPool() {
         int newSize = poolSize * 2;
         byte[] newPool = new byte[newSize];
@@ -152,7 +177,7 @@ public class MemManager {
             newPool[i] = pool[i];
         }
         this.pool = newPool;
-        int numLists = (int)(Math.log(newSize)/Math.log(2));
+        int numLists = (int)(Math.log(newSize) / Math.log(2));
 
         LinkedList[] newfreeListArr = new LinkedList[numLists + 1];
 
@@ -176,7 +201,9 @@ public class MemManager {
     }
 
 
-
+    /**
+     * Prints the memory pool
+     */
     public void printPool() {
         for (int i = 0; i < pool.length; i++) {
             if (pool[i] == 0) {
@@ -194,19 +221,19 @@ public class MemManager {
     }
 
 
+    /**
+     * Prints a string of the Free Block List
+     */
     public void dump() {
         System.out.println("Freeblock List:");
         boolean noBlocks = true;
         for (int i = 0; i < freeListArr.length; i++) {
-            // Calculate the size of the block based on its index in freeListArr
             int blockSize = (int)Math.pow(2, i);
 
-            // Only print out lists that are not empty
             if (!freeListArr[i].isEmpty()) {
                 System.out.print(blockSize + ":");
                 noBlocks = false;
 
-                // Use an inner node to traverse the linked list
                 LinkedList.Node currentNode = freeListArr[i].getHead();
                 while (currentNode != null) {
                     System.out.print(" " + currentNode.getData());
@@ -222,21 +249,37 @@ public class MemManager {
     }
 
 
-
+    /**
+     * Returns the size of the memory pool
+     * 
+     * @return int: size of the pool in bytes
+     */
     public int getPoolSize() {
         return poolSize;
     }
 
 
-
+    /**
+     * Gets the byte array that is held within the position handle
+     * 
+     * @param theHandle:
+     *            Handle that holds the position of what should be returned
+     * @return byte array with that contains what was held in the postion handle
+     */
     public byte[] get(Handle theHandle) {
         byte[] space = new byte[theHandle.getLength()];
         System.arraycopy(pool, theHandle.getStartPos(), space, 0, theHandle
             .getLength());
         return space;
     }
-    
-    public byte[] getPool(){
+
+
+    /**
+     * Gets the byte array that is the memory pool
+     * 
+     * @return byte[] memory pool
+     */
+    public byte[] getPool() {
         return this.pool;
     }
 
