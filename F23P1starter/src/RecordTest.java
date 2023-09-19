@@ -20,5 +20,6 @@ public class RecordTest extends TestCase {
         assertEquals(han.getStartPos(), 20);
         assertEquals(han.getEndPos(), 20);
         assertEquals(han.getLength(), 0);
+        
     }
 }

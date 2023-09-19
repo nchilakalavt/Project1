@@ -40,7 +40,7 @@ public class SemManager {
         // This is the main file for the program.
 
         CommandProcessor Reader = new CommandProcessor(args[0], args[1]);
-        Reader.beginParsing(args[2]);
+        Reader.parsing(args[2]);
         
     }
 }

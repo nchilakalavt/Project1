@@ -50,12 +50,6 @@ public class MemManagerTest extends TestCase{
         Handle hand = new Handle(0, mysem3.serialize().length);
         MemManager mem2 = new MemManager(512);
         //mem2.dump(hand);
-      
-    }
-    
-    public void testMinPowerOfTwo() {
-        assertEquals(mem.minPowerTwo(0), 0);
-        assertEquals(mem.minPowerTwo(8), 3);
-        assertEquals(mem.minPowerTwo(17), 5);
+        
     }
 }

@@ -75,7 +75,7 @@ public class MemManager {
                     if (i == listIndex) {
                         int index = freeListArr[i].removeFirst();
                         System.arraycopy(space, 0, pool, index, size);
-                        return new Handle(index, size);
+                        return new Handle(index, index +size);
 
                     }
                     else {
@@ -87,7 +87,7 @@ public class MemManager {
                         }
 
                         System.arraycopy(space, 0, pool, index, size);
-                        return new Handle(index, size);
+                        return new Handle(index, index + size);
                     }
 
                 }

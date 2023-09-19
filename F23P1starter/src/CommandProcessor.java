@@ -1,3 +1,11 @@
+/**
+ * 
+ * 
+ * Class for the CommandProcessor
+ * 
+ * @author nchilakala pratc
+ * @version 9/19/23
+ */
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -8,9 +16,6 @@ import java.nio.file.Paths;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Scanner;
-/**
- * Class that will do most of the parsing of the input file. 
- */
 
 public class CommandProcessor {
     private int id;
@@ -26,9 +31,7 @@ public class CommandProcessor {
     private int memSize;
 
     /**
-     * Creates the command processor object
-     * @param memSize: size of the memory pool
-     * @param hashSize: size of the hash table
+     * @param MemSize and HashSize strings that tell us how big our hashtable and memory pool will be
      */
     public CommandProcessor(String memSize, String hashSize) {
         this.hashSize = Integer.parseInt(hashSize);
@@ -36,17 +39,19 @@ public class CommandProcessor {
 
     }
 
+
     /**
-     * Parses through the input file and checks what commands should be processed
-     * @param filename: name of the input file
+     * method to parse through the file
+     * 
+     * @param filename to parse through
      */
-    public void beginParsing(String filename) {
+    public void parsing(String filename) {
         try {
             SemDatabase semdata = new SemDatabase(hashSize, memSize);
-            Scanner sc = new Scanner(new File(filename));// Create our new
-                                                         // scanner
-            while (sc.hasNext()) {// While the scanner has information to read
-                String cmd = sc.next();// Read the next te
+            Scanner sc = new Scanner(new File(filename));
+            while (sc.hasNext()) {
+                String cmd = sc.next();
+                // switch case based on what string command is read
                 switch (cmd) {
                     case "insert":
                         id = sc.nextInt();
@@ -58,22 +63,19 @@ public class CommandProcessor {
                         y = sc.nextShort();
                         cost = sc.nextInt();
                         sc.nextLine();
-                        String[] key = sc.nextLine().split("\\s+");
+                        String[] key = sc.nextLine().trim().split("\\s+");
                         keywords = new String[key.length];
                         for (int i = 0; i < key.length; i++) {
                             if (!key[i].equals(" ")) {
                                 keywords[i] = (key[i].trim());
                             }
-
                         }
                         desc = sc.nextLine().trim();
-
                         Seminar sem = new Seminar(id, title, date, length, x, y,
                             cost, keywords, desc);
                         semdata.insert(sem);
-
                         break;
-                    case "print":// Found an add command
+                    case "print":
                         String command = sc.next();
                         if (command.equals("hashtable")) {
                             semdata.printHash();
@@ -85,16 +87,16 @@ public class CommandProcessor {
                             break;
                         }
                         break;
-                    case "delete":// Found a delete command
+                    case "delete":
                         id = sc.nextInt();
                         semdata.delete(id);
                         break;
-                    case "search":// Found a search command
+                    case "search":
                         id = sc.nextInt();
                         semdata.search(id);
 
                         break;
-                    default:// Found an unrecognized command
+                    default:
                         System.out.println("Unrecognized input " + cmd);
                         break;
                 }

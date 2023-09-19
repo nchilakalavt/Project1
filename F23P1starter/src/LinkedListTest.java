@@ -1,3 +1,4 @@
+
 import student.TestCase;
 /**
  * class to test linked list
@@ -12,7 +13,7 @@ public class LinkedListTest extends TestCase {
         r = new LinkedList();
         r.add(3);
 
-
+        
     }
 
 /**
@@ -39,15 +40,13 @@ public class LinkedListTest extends TestCase {
     public void testRemoveFirst() {
         LinkedList emptyL = new LinkedList();
         Exception e = null;
-       /** try {
-            emptyL.removeFirst();
-          
-        }
-        catch
-        {
-            assertEquals(e, "Empty Lists");
-        }
-        */
-        
+  
+}
+    public void testNode() {
+        LinkedList.Node n = r.new Node(3);
+        assertEquals(n.getNextNode(), null);
+        assertEquals(n.getPreviousNode(), null);
+        assertEquals(n.getData(), 3);
     }
+    
 }

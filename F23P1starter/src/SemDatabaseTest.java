@@ -19,10 +19,14 @@ public class SemDatabaseTest extends TestCase {
 
 
     public void testDelete() throws Exception {
+        s.delete(20); 
+        String expectedOut = systemOut().getHistory();
+        assertEquals("Delete FAILED -- There is no record with ID 20\n" ,expectedOut);
         Handle han = new Handle(2, 2);
         Record r = new Record(han, 1);
         s.insert(mysem2); 
         s.delete(mysem2.getID());
+       
         // assertEquals(, false)
     }
 
