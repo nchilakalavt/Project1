@@ -50,14 +50,15 @@ public class CommandProcessor {
                        cost = sc.nextInt();
                        sc.nextLine();
                        String[] key = sc.nextLine().split("\\s+");
-                       String[] keywords = new String[key.length];
+                       keywords = new String[key.length];
                        for (int i = 0 ; i < key.length; i++) {
                            if (!key[i].equals(" ")) {
                                keywords[i] = (key[i].trim()); 
                            }
                            
                        }
-                       desc = sc.nextLine();
+                       desc = sc.nextLine().trim();
+                    
                        Seminar sem = new Seminar(id, title, date , length, x, y, cost, keywords, desc);
                        semdata.insert(sem);
                        
@@ -95,4 +96,3 @@ public class CommandProcessor {
        
        }
 }
-
